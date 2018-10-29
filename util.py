@@ -2,8 +2,13 @@ import json
 
 Tweets = []
 	
+### output: array
 def getTweets():
-	with open("p2000.txt", "r") as f:
+	with open("p2000a.txt", "r") as f:
+		lines = f.readlines()
+		for line in lines:
+			Tweets.append(json.loads(line))
+	with open("p2000b.txt", "r") as f:
 		lines = f.readlines()
 		for line in lines:
 			Tweets.append(json.loads(line))
