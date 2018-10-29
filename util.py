@@ -19,12 +19,14 @@ def getTweetsByAttributes(tweets, keys, val):
 	filtered = []
 	for attribute in tweets:
 		original = attribute;
+		found = True
 		for key in keys:
 			try: 
 				attribute = attribute[key]
 			except KeyError:
+				found = False
 				break
-		if type(attribute) == "string" and attribute.lower() == val.lower():
+		if found and attribute == val: 
 			filtered.append(original)
 	return filtered
 
@@ -34,12 +36,14 @@ def getUniqueValues(tweets, keys):
 	values = []
 	for attribute in tweets:
 		original = attribute;
+		found = True
 		for key in keys:
 			try: 
 				attribute = attribute[key]
 			except KeyError:
+				found = False
 				break
-		if type(attribute) == "string":
+		if found:
 			values.append(attribute)
 	values = set(values)
 	return values
