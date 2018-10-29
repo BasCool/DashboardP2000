@@ -23,7 +23,7 @@ def getTweetsByAttributes(tweets, keys, val):
 		for key in keys:
 			try: 
 				attribute = attribute[key]
-			except KeyError:
+			except (KeyError, IndexError):
 				found = False
 				break
 		if found and attribute == val: 
@@ -40,7 +40,7 @@ def getUniqueValues(tweets, keys):
 		for key in keys:
 			try: 
 				attribute = attribute[key]
-			except KeyError:
+			except (KeyError, IndexError):
 				found = False
 				break
 		if found:
