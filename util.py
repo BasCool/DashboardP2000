@@ -13,30 +13,33 @@ def getTweets():
 			tweets.append(json.loads(line))
 	return tweets
 
-### input: array keys, string val
+### input: array tweets, array keys, string val
 ### output: array 
 def getTweetsByAttributes(tweets, keys, val):
 	filtered = []
 	for attribute in tweets:
 		original = attribute;
 		for key in keys:
-			attribute = attribute[key]
-			if not attribute:
+			try: 
+				attribute = attribute[key]
+			except KeyError:
 				break
-		if attribute.lower() == val.lower():
+		if type(attribute) == "string" and attribute.lower() == val.lower():
 			filtered.append(original)
 	return filtered
 
-### input: array keys
+### input: array tweets, array keys
 ### output: array 
 def getUniqueValues(tweets, keys):
 	values = []
 	for attribute in tweets:
 		original = attribute;
 		for key in keys:
-			attribute = attribute[key]
-			if not attribute:
+			try: 
+				attribute = attribute[key]
+			except KeyError:
 				break
-		values.append(attribute)
+		if type(attribute) == "string":
+			values.append(attribute)
 	values = set(values)
 	return values
