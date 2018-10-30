@@ -1,6 +1,7 @@
 import json
 
 ### output: string
+### example: getTweetsString
 def getTweetsString():
 	tweets = None
 	with open("p2000a.txt", "r") as f:
@@ -10,6 +11,7 @@ def getTweetsString():
 	return tweets
 	
 ### output: array
+### example: getTweetsArray()
 def getTweetsArray():
 	tweets = []
 	with open("p2000a.txt", "r") as f:
@@ -24,6 +26,7 @@ def getTweetsArray():
 
 ### input: array tweets, array keys, string val
 ### output: array 
+### example: getTweetsByAttributes(tweets, ["user", "name"], "p2000rotterdam")
 def getTweetsByAttributes(tweets, keys, val):
 	filtered = []
 	for attribute in tweets:
@@ -41,6 +44,7 @@ def getTweetsByAttributes(tweets, keys, val):
 
 ### input: array tweets, array keys, string substring
 ### output: array 
+### example: getTweetsByAttributesWithFind(tweets, ["user", "name"], "amsterdam")
 def getTweetsByAttributesWithFind(tweets, keys, substring):
 	filtered = []
 	for attribute in tweets:
@@ -55,9 +59,39 @@ def getTweetsByAttributesWithFind(tweets, keys, substring):
 		if found and not attribute.find(substring) == -1: 
 			filtered.append(original)
 	return filtered
+	
+### input: array tweets, array keys, string substring
+### output: array 
+### example: getTweetsByAttributesInArray(tweets, ["entities", "hashtags"], ["text"], "Zwolle")
+def getTweetsByAttributesInArray(tweets, objectKeys, dictKeys, val):
+	filtered = []
+	for objectAttribute in tweets:
+		original = objectAttribute
+		found = True
+		for key in objectKeys:
+			try: 
+				objectAttribute = objectAttribute[key]
+			except (KeyError, IndexError):
+				found = False
+				break
+		if found: 
+			for member in objectAttribute:
+				dictAttribute = member
+				found = True
+				for key in dictKeys:
+					try: 
+						dictAttribute = dictAttribute[key]
+					except (KeyError, IndexError):
+						found = False
+						break
+				if found and dictAttribute == val:
+					filtered.append(original)
+					break
+	return filtered
 
 ### input: array tweets, array keys
 ### output: array 
+### example: getUniqueValues(tweets, ["user", "name"])
 def getUniqueValues(tweets, keys):
 	values = []
 	for attribute in tweets:
