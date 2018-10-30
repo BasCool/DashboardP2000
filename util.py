@@ -149,3 +149,14 @@ def getUniqueValuesInArray(tweets, objectKeys, dictKeys):
 	if values == set():
 		values = []
 	return values
+	
+### input: array tweets, double t1, double t2
+### output: array 
+### example: getTweetsInTimeFrame(tweets, getUnixFromDate("Sun Nov 20 12:37:45 +0000 2011"), getUnixFromDate("Sun Dec 04 01:39:30 +0000 2011"))
+def getTweetsInTimeFrame(tweets, t1, t2):
+	filtered = []
+	for tweet in tweets:
+		unix = getUnixFromDate(tweet["created_at"])
+		if unix > t1 and unix < t2:
+			filtered.append(tweet)
+	return filtered
