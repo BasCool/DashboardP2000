@@ -12,7 +12,7 @@ root_content_path = '36_static'
 # the action will be called with the context and the event
 @event('init')
 def setup(ctx, e):
-    start_offline_tweets('p2000.txt', time_factor=1000, event_name='chirp')
+    start_offline_tweets('p2000a.txt', time_factor=1000, event_name='chirp'); start_offline_tweets('p2000b.txt', time_factor=1000, event_name='chirp')
 
 @event('chirp')
 def tweet(ctx, e):
