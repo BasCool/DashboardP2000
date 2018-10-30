@@ -106,4 +106,37 @@ def getUniqueValues(tweets, keys):
 		if found:
 			values.append(attribute)
 	values = set(values)
+	if values == set():
+		values = []
+	return values
+	
+### input: array tweets, array keys
+### output: array 
+### example: getUniqueValuesInArray(tweets, ["entities", "hashtags"], ["text"])
+def getUniqueValuesInArray(tweets, objectKeys, dictKeys):
+	values = []
+	for objectAttribute in tweets:
+		original = objectAttribute;
+		found = True
+		for key in objectKeys:
+			try: 
+				objectAttribute = objectAttribute[key]
+			except (KeyError, IndexError):
+				found = False
+				break
+		if found:
+			for member in objectAttribute:
+				dictAttribute = member
+				found = True
+				for key in dictKeys:
+					try: 
+						dictAttribute = dictAttribute[key]
+					except (KeyError, IndexError):
+						found = False
+						break
+				if found:
+					values.append(dictAttribute)
+	values = set(values)
+	if values == set():
+		values = []
 	return values
