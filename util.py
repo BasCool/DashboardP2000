@@ -1,7 +1,11 @@
 import json
 import time
 
-priorities = ["A1", "A2", "A3", "Prio: 1", "Prio: 2", "Prio: 3", "PRIO 1", "PRIO 2", "PRIO 3", "Prio 1", "Prio 2", "Prio 3"]
+priorities = [
+	["A1", "P 1", "Prio: 1", "PRIO 1", "Prio 1"],
+	["A2", "P 2", "Prio: 2", "PRIO 2", "Prio 2"],
+	["A3", "P 3", "Prio: 3", "PRIO 3", "Prio 3"]
+]
 
 ### input: string date
 ### output: double
@@ -69,7 +73,7 @@ def getTweetsByAttributesWithFind(tweets, keys, substring):
 			filtered.append(original)
 	return filtered
 	
-### input: array tweets, array keys, string substring
+### input: array tweets, array objectKeys, array dictKeys, string val
 ### output: array 
 ### example: getTweetsByAttributesInArray(tweets, ["entities", "hashtags"], ["text"], "Zwolle")
 def getTweetsByAttributesInArray(tweets, objectKeys, dictKeys, val):
@@ -119,7 +123,7 @@ def getUniqueValues(tweets, keys):
 		values = []
 	return values
 	
-### input: array tweets, array keys
+### input: array tweets, array objectKeys, array dictKeys
 ### output: array 
 ### example: getUniqueValuesInArray(tweets, ["entities", "hashtags"], ["text"])
 def getUniqueValuesInArray(tweets, objectKeys, dictKeys):
