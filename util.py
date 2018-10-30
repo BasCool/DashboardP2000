@@ -1,4 +1,13 @@
 import json
+import time
+
+priorities = []
+
+### input: string date
+### output: double
+### example: getUnixFromDate("Wed Sep 18 20:17:17 +0000 2013")
+def getUnixFromDate(date):
+	return time.mktime(time.strptime(date,"%a %b %d %H:%M:%S +0000 %Y"))
 
 ### output: string
 ### example: getTweetsString
