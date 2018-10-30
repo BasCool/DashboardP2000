@@ -30,6 +30,23 @@ def getTweetsByAttributes(tweets, keys, val):
 			filtered.append(original)
 	return filtered
 
+### input: array tweets, array keys, string substring
+### output: array 
+def getTweetsByAttributesWithFind(tweets, keys, substring):
+	filtered = []
+	for attribute in tweets:
+		original = attribute;
+		found = True
+		for key in keys:
+			try: 
+				attribute = attribute[key]
+			except (KeyError, IndexError):
+				found = False
+				break
+		if found and not attribute.find(substring) == -1: 
+			filtered.append(original)
+	return filtered
+
 ### input: array tweets, array keys
 ### output: array 
 def getUniqueValues(tweets, keys):
