@@ -1,7 +1,16 @@
 import json
+
+### output: string
+def getTweetsString():
+	tweets = None
+	with open("p2000a.txt", "r") as f:
+		tweets = f.read()
+	with open("p2000b.txt", "r") as f:
+		tweets = tweets + "\n" + f.read()
+	return tweets
 	
 ### output: array
-def getTweets():
+def getTweetsArray():
 	tweets = []
 	with open("p2000a.txt", "r") as f:
 		lines = f.readlines()
