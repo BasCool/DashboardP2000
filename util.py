@@ -10,7 +10,7 @@ def getUnixFromDate(date):
 	return time.mktime(time.strptime(date,"%a %b %d %H:%M:%S +0000 %Y"))
 
 ### output: string
-### example: getTweetsString
+### example: getTweetsString()
 def getTweetsString():
 	tweets = None
 	with open("p2000a.txt", "r") as f:
