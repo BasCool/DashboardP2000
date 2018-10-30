@@ -1,7 +1,7 @@
 import json
 import time
 
-priorities = []
+priorities = ["A1", "A2", "A3", "Prio: 1", "Prio: 2", "Prio: 3", "PRIO 1", "PRIO 2", "PRIO 3", "Prio 1", "Prio 2", "Prio 3"]
 
 ### input: string date
 ### output: double
