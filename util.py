@@ -51,17 +51,9 @@ def getTweetsArray():
 ### example: getTweetsByAttributes(tweets, ["user", "name"], "p2000rotterdam")
 def getTweetsByAttributes(tweets, keys, val):
 	filtered = []
-	for attribute in tweets:
-		original = attribute;
-		found = True
-		for key in keys:
-			try: 
-				attribute = attribute[key]
-			except (KeyError, IndexError):
-				found = False
-				break
-		if found and attribute == val: 
-			filtered.append(original)
+	for tweet in tweets:
+		if hasTweetAttributes(tweet, keys, val):
+			filtered.append(tweet)
 	return filtered
 
 ### input: array tweets, array keys, string substring
@@ -69,17 +61,9 @@ def getTweetsByAttributes(tweets, keys, val):
 ### example: getTweetsByAttributesWithFind(tweets, ["user", "name"], "amsterdam")
 def getTweetsByAttributesWithFind(tweets, keys, substring):
 	filtered = []
-	for attribute in tweets:
-		original = attribute;
-		found = True
-		for key in keys:
-			try: 
-				attribute = attribute[key]
-			except (KeyError, IndexError):
-				found = False
-				break
-		if found and not attribute.find(substring) == -1: 
-			filtered.append(original)
+	for tweet in tweets:
+		if hasTweetAttributesWithFind(tweet, keys, substring):
+			filtered.append(tweet)
 	return filtered
 	
 ### input: array tweets, array objectKeys, array dictKeys, string val
@@ -87,28 +71,9 @@ def getTweetsByAttributesWithFind(tweets, keys, substring):
 ### example: getTweetsByAttributesInArray(tweets, ["entities", "hashtags"], ["text"], "Zwolle")
 def getTweetsByAttributesInArray(tweets, objectKeys, dictKeys, val):
 	filtered = []
-	for objectAttribute in tweets:
-		original = objectAttribute
-		found = True
-		for key in objectKeys:
-			try: 
-				objectAttribute = objectAttribute[key]
-			except (KeyError, IndexError):
-				found = False
-				break
-		if found: 
-			for member in objectAttribute:
-				dictAttribute = member
-				found = True
-				for key in dictKeys:
-					try: 
-						dictAttribute = dictAttribute[key]
-					except (KeyError, IndexError):
-						found = False
-						break
-				if found and dictAttribute == val:
-					filtered.append(original)
-					break
+	for tweet in tweets:
+		if hasTweetsAttributesInArray(tweet, objectKeys, dictKeys, val):
+			filtered.append(tweet)
 	return filtered
 
 ### input: array tweets, array keys
@@ -190,7 +155,7 @@ def getTweetsWithPriority(tweets, num):
 			filtered.append(tweet)
 	return filtered
 
-### input: pbject tweet, array keys, string val
+### input: object attribute, array keys, string val
 ### output: bool 
 ### example: hasTweetAttributes(tweet, ["user", "name"], "p2000rotterdam")
 def hasTweetAttributes(attribute, keys, val):
@@ -203,7 +168,7 @@ def hasTweetAttributes(attribute, keys, val):
 			break
 	return found and attribute == val
 
-### input: object tweet, array keys, string substring
+### input: object attribute, array keys, string substring
 ### output: bool
 ### example: hasTweetAttributesWithFind(tweet, ["user", "name"], "amsterdam")
 def hasTweetAttributesWithFind(attribute, keys, substring):
@@ -216,7 +181,7 @@ def hasTweetAttributesWithFind(attribute, keys, substring):
 			break
 	return found and not attribute.find(substring) == -1
 	
-### input: object tweet, array objectKeys, array dictKeys, string val
+### input: object objectAttribute, array objectKeys, array dictKeys, string val
 ### output: bool
 ### example: hasTweetAttributesInArray(tweet, ["entities", "hashtags"], ["text"], "Zwolle")
 def hasTweetAttributesInArray(objectAttribute, objectKeys, dictKeys, val):
