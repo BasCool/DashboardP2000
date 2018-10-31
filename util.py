@@ -6,6 +6,11 @@ priorities = [
 	["A2", "P 2", "Prio: 2", "PRIO 2", "Prio 2"],
 	["B", "P 3", "Prio: 3", "PRIO 3", "Prio 3"]
 ]
+services = {
+	"police": ["Mishandeling", "Vechtpartij"],
+	"ambulance": ["A1" , "A2", "B", "AMBU", "Ambulance", "Ambu", "ziekenhuis"],
+	"fireBrigade": ["Rookmelder", "Soort Inzet HV: ", "Brand", " TS", "brand", "brandmelding"]
+}
 
 ### input: string date
 ### output: double
@@ -139,7 +144,7 @@ def getTweetsInTimeFrame(tweets, t1, t2):
 			filtered.append(tweet)
 	return filtered
 	
-### input: array tweets, double t1, double t2
+### input: array tweets, int num
 ### output: array 
 ### example: getTweetsWithPriority(tweets, 1)
 def getTweetsWithPriority(tweets, num):
@@ -153,6 +158,28 @@ def getTweetsWithPriority(tweets, num):
 				break
 		if isPriority:
 			filtered.append(tweet)
+	return filtered
+
+### input: array tweets, string service
+### output: array 
+### example: getTweetsWithService(tweets, "fireBrigade")
+def getTweetsWithService(tweets, service):
+	filtered = []
+	substrings = None
+	found = True
+	try:
+		substrings = services[service]
+	except AttributeError:
+		found = False
+	if found:
+		for tweet in tweets:
+			isPriority = False
+			for substring in substrings:
+				if not tweet["text"].find(substring) == -1:
+					isPriority = True
+					break
+			if isPriority:
+				filtered.append(tweet)
 	return filtered
 
 ### input: object attribute, array keys, string val
@@ -207,7 +234,7 @@ def hasTweetAttributesInArray(objectAttribute, objectKeys, dictKeys, val):
 	return False
 
 ### input: array tweets
-### example: printContents(tweet):
+### example: printContents(tweets):
 def printContents(tweets):
 	for tweet in tweets:
 		print(tweet["text"])
