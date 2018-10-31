@@ -257,13 +257,13 @@ def hasTweetAttributesInArray(objectAttribute, objectKeys, dictKeys, val):
 				return True
 	return False
 
-## input: object tweet, int priority
-## output: bool
-## example: isTweetPriority(tweet, 1)
+### input: object tweet, int priority
+### output: bool
+### example: isTweetPriority(tweet, 1)
 def isTweetPriority(tweet, priority):
 	substrings = None
 	try:
-		substrings = priorities[num - 1]
+		substrings = priorities[priority - 1]
 	except AttributeError:
 		return False
 	for substring in substrings:
@@ -271,9 +271,9 @@ def isTweetPriority(tweet, priority):
 			return True
 	return False
 	
-## input: object tweet, string service
-## output: bool
-## example: isTweetService(tweet, "fireBrigade")
+### input: object tweet, string service
+### output: bool
+### example: isTweetService(tweet, "fireBrigade")
 def isTweetService(tweet, service):
 	substrings = None
 	try:
@@ -285,9 +285,9 @@ def isTweetService(tweet, service):
 			return True
 	return False
 			
-## input: object tweet, double t1, double t2
-## output: bool
-## example: isTweetInTimeFrame(tweet, 1379528870.0, 1379530847.0)
+### input: object tweet, double t1, double t2
+### output: bool
+### example: isTweetInTimeFrame(tweet, 1379528870.0, 1379530847.0)
 def isTweetInTimeFrame(tweet, t1, t2):
 	unix = getUnixFromDate(tweet["created_at"])
 	return unix > t1 and unix < t2
@@ -297,3 +297,105 @@ def isTweetInTimeFrame(tweet, t1, t2):
 def printContents(tweets):
 	for tweet in tweets:
 		print(tweet["text"])
+
+### input: dictionary filters
+### output: dictionary
+### example: print(convertFilters({'adam': ['on'], 'rdam': ['on'], 'zwol': ['on'], 'lwar': ['on'], 'nhln': ['on'], 'tilb': ['on'], 'gtrb': ['on'], 'harw': ['on'], 'oldb': ['on'], 'oned': ['on'], 'police': ['on'], 'ambu': ['on'], 'firebrig': ['on'], 'prio1': ['on'], 'prio2': ['on'], 'prio3': ['on'], 'time-start': '', 'time-end': '', 'date-start': '', 'date-end': ''}))
+def convertFilters(form):
+	converted = {
+		"cities": {
+			"adam": False,
+			"rdam": False,
+			"zwol": False,
+			"lwar": False,
+			"nhln": False,
+			"tilb": False,
+			"gtrb": False,
+			"harw": False,
+			"oldb": False,
+			"oned": False
+		},
+		"services": {
+			"police": False,
+			"ambu": False,
+			"firebrig": False
+		},
+		"priorities": {
+			"prio1": False,
+			"prio2": False,
+			"prio3": False
+		},
+		"time": 0
+	}
+	for index in form:
+		if index == "adam" or index == "rdam" or index == "zwol" or index == "lwar" or index == "nhln" or index == "tilb" or index == "gtrb" or index == "harw" or index == "oldb" or index == "oned":
+			if not form[index] == []:
+				converted["cities"][index] = True
+		elif index == "police" or index == "ambu" or index == "firebrig":
+			if not form[index] == []:
+				converted["services"][index] = True
+		elif index == "prio1" or index == "prio2" or index == "prio3":
+			if not form[index] == []:
+				converted["priorities"][index] = True
+		#elif index == "time-start" or index == "time-end" or index == "date-start" or index == "date-end":
+			#if not form[index] == "":
+				#
+	return converted
+
+### input: object tweet, dictionary filters
+### output: bool
+### example: filterTweet(tweet, {'adam': ['on'], 'rdam': ['on'], 'zwol': ['on'], 'lwar': ['on'], 'nhln': ['on'], 'tilb': ['on'], 'gtrb': ['on'], 'harw': ['on'], 'oldb': ['on'], 'oned': ['on'], 'police': ['on'], 'ambu': ['on'], 'firebrig': ['on'], 'prio1': ['on'], 'prio2': ['on'], 'prio3': ['on'], 'time-start': '', 'time-end': '', 'date-start': '', 'date-end': ''})
+def filterTweet(tweet, filters):
+	filters = convertFilters(filters)
+	for filter in filters:
+		if filter == "cities":
+			for attribute in filters[filter]:
+				if filters[filter][attribute]:
+					region = None
+					if attribute == "adam":
+						region = "Amsterdam"
+					elif attribute == "rdam":
+						region = "Rotterdam"
+					elif attribute == "zwol":
+						region = "Zwolle"
+					elif attribute == "lwar":
+						region = "Leeuwarden"
+					elif attribute == "nhln":
+						region = "NHN"
+					elif attribute == "tilb":
+						region = "Tilburg"
+					elif attribute == "gtrb":
+						region = "Geertruidenberg"
+					elif attribute == "harw":
+						region = "Harderwijk"
+					elif attribute == "oldb":
+						region = "Oldeburg"
+					elif attribute == "oned":
+						region = "MON"
+					if not hasTweetAttributesWithFind(tweet, ["user", "name"], region) and not hasTweetAttributesWithFind(tweet, ["text"], region):
+						return False
+		elif filter == "services":
+			for attribute in filters[filter]:
+				if filters[filter][attribute]:
+					service = attribute
+					if attribute == "ambu":
+						service = "ambulance"
+					elif attribute == "firebrig":
+						service = "fireBrigade"
+					if not isTweetService(tweet, service):
+						return False
+		elif filter == "priorities":
+			for attribute in filters[filter]:
+				if filters[filter][attribute]:
+					priority = None
+					if attribute == "prio1":
+						priority = 1
+					elif attribute == "prio2":
+						priority = 2
+					elif attribute == "prio3":
+						priority = 3
+					if not isTweetPriority(tweet, priority):
+						return False
+		#elif type == "time":
+			#
+	return True
