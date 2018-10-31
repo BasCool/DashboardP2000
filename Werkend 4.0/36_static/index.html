@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+.item1 { grid-area: header; }
+.item2 { grid-area: menu;}
+.item3 { grid-area: main;}
+.item4 { grid-area: right;}
+.item5 { grid-area: footer; }
+
+.grid-container {
+  display: grid;
+  grid-template-areas:
+    'header header header header header'
+    'menu main main right right'
+    'menu footer footer footer footer';
+  grid-gap: 10px;
+  background-color: #FFFFFF;
+  padding: 10px;
+}
+.grid-container > div {
+  background-color: rgba(0, 0, 0, 0);
+  text-align: left;
+  padding: 20px 0;
+  font-size: 15px;
+}
+</style>
+
+<title>Bas Bankje</title>
+<link rel="stylesheet" href="/style/layout.css"/>
+<link rel="stylesheet" href="/style/theme.css"/>
+<script src="/lib/jquery-2.1.1.min.js"></script>
+<script src="/lib/jquery.flot.min.js"></script>
+<script src="/lib/core.js"></script>
+<script src="/lib/charts.js"></script>
+<script src="/lib/log.js"></script>
+<script src="/lib/tweets.js"></script>
+
+<script>
+function msg() {
+var text = document.getElementById('textbox1').value;
+var one = document.getElementById('one').checked;
+var two = document.getElementById('two').checked;
+var three = document.getElementById('three').checked;
+
+console.log([text,one,two,three]);
+}
+</script>
+</head>
+<body class="grid-container">
+<h1  class="item1">Letterlijk asbest</h1>
+<div id="unfiltered"  class="item3" width="40%"></div>
+<div id="filtered" class="item4" width="40%"></div>
+
+<div id='messages' class='item5'></div>
+
+
+<div id='filter' class='item2'>
+	<div id='cities'>
+		<p><b>Cities</b></p>
+		<textarea name='text' id='textbox1' rows="4" cols='25'></textarea>
+	</div>
+	<div id='services'>
+		<p><b>Services</b></p>
+		<ul>
+			<li style="display:block;"><input type="checkbox" name="Police" id="one" checked>Police</li>
+			<li style="display:block;"><input type="checkbox" name="Ambulance" id="two" checked>Ambulance</li>
+			<li style="display:block;"><input type="checkbox" name="Fire Department" id="three" checked>Fire department</li>
+		</ul>
+	</div>
+	<div id='priority'>
+		<p><b>Priority</b></p>
+		<ul>
+			<li style="display:block;"><input type="checkbox" name="Prio1" id="one" checked>First priority</li>
+			<li style="display:block;"><input type="checkbox" name="Prio2" id="two" checked>Second priority</li>
+			<li style="display:block;"><input type="checkbox" name="Prio3" id="three" checked>Third priority</li>
+		</ul>
+	</div>
+	<div id='time'>
+		<p><b>Time</b></p>
+			<label for="time-start">From:   </label></br>
+			<input id="time-start" type="time" name="time-end"></br>
+			<label for="time-end">To:     </label></br>
+			<input id="time-end" type="time" name="time-end">
+	</div>
+	</br>
+	<div>
+		<p><b>Date</b></p>
+			<label for="date-start">From:   </label></br>
+			<input id="date-start" type="date" name="date-start"></br>
+			<label for="date-start">To:     </label></br>
+			<input id="date-start" type="date" name="date-start">
+	</div>
+</div>
+
+
+<script>
+block('#unfiltered').tweets({
+  memory: 12
+});
+events.connect('unfiltered', '#unfiltered');
+
+block('#filtered').tweets({
+  memory: 12
+});
+events.connect('filtered', '#filtered');
+</script>
+</body>
+</html>
