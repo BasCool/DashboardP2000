@@ -191,7 +191,7 @@ def getTweetsWithPriority(tweets, num):
 	return filtered
 
 ### input: array tweets, array keys, string val
-### output: array 
+### output: bool 
 ### example: hasTweetAttributes(tweet, ["user", "name"], "p2000rotterdam")
 def hasTweetAttributes(attribute, keys, val):
 	original = attribute;
@@ -202,5 +202,18 @@ def hasTweetAttributes(attribute, keys, val):
 		except (KeyError, IndexError):
 			found = False
 			break
-	if found and attribute == val: 
-		return True
+	return found and attribute == val
+
+### input: array tweets, array keys, string substring
+### output: bool
+### example: hasTweetAttributesWithFind(tweet, ["user", "name"], "amsterdam")
+def hasTweetAttributesWithFind(attribute, keys, val):
+	original = attribute;
+	found = True
+	for key in keys:
+		try: 
+			attribute = attribute[key]
+		except (KeyError, IndexError):
+			found = False
+			break
+	return found and not attribute.find(substring) == -1
