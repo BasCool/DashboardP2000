@@ -194,7 +194,6 @@ def getTweetsWithPriority(tweets, num):
 ### output: bool 
 ### example: hasTweetAttributes(tweet, ["user", "name"], "p2000rotterdam")
 def hasTweetAttributes(attribute, keys, val):
-	original = attribute;
 	found = True
 	for key in keys:
 		try: 
@@ -208,7 +207,6 @@ def hasTweetAttributes(attribute, keys, val):
 ### output: bool
 ### example: hasTweetAttributesWithFind(tweet, ["user", "name"], "amsterdam")
 def hasTweetAttributesWithFind(attribute, keys, substring):
-	original = attribute;
 	found = True
 	for key in keys:
 		try: 
@@ -222,7 +220,6 @@ def hasTweetAttributesWithFind(attribute, keys, substring):
 ### output: bool
 ### example: hasTweetAttributesInArray(tweet, ["entities", "hashtags"], ["text"], "Zwolle")
 def hasTweetAttributesInArray(objectAttribute, objectKeys, dictKeys, val):
-	original = objectAttribute
 	found = True
 	for key in objectKeys:
 		try: 
