@@ -51,6 +51,51 @@ def getTweetsArray():
 			tweets.append(json.loads(line))
 	return tweets
 
+### input: array tweets, array keys
+### output: array
+### example: sortTweetsByAttributes(tweets, ["favorite_count"])
+def sortTweetsByAttributes(tweets, keys, reverse=False):
+	if len(tweets) <= 1:
+		return tweets[:]
+	else:
+		mi = len(tweets) // 2
+		fst = sortTweetsByAttributes(tweets[:mi], keys, reverse)
+		snd = sortTweetsByAttributes(tweets[mi:], keys, reverse)
+		res = []
+		fi, si = 0, 0
+		while fi < len(fst) and si < len(snd):
+			first = fst[fi]
+			second = snd[si]
+			for key in keys:
+				try: 
+					first = first[key]
+				except (KeyError, IndexError):
+					first = 0
+			for key in keys:
+				try: 
+					second = second[key]
+				except (KeyError, IndexError):
+					second = 0
+			if not descend:
+				if first <= second:
+					res.append(fst[fi])
+					fi += 1
+				else:
+					res.append(snd[si])
+					si += 1
+			else:
+				if first >= second:
+					res.append(fst[fi])
+					fi += 1
+				else:
+					res.append(snd[si])
+					si += 1
+		if fi < len(fst):
+			res.extend(fst[fi:])
+		elif si < len(snd):
+			res.extend(snd[si:])
+		return res
+		
 ### input: array tweets, array keys, string val
 ### output: array 
 ### example: getTweetsByAttributes(tweets, ["user", "name"], "p2000rotterdam")
@@ -98,8 +143,7 @@ def getUniqueValues(tweets, keys):
 		if found:
 			values.append(attribute)
 	values = set(values)
-	if values == set():
-		values = []
+	values = list(values)
 	return values
 	
 ### input: array tweets, array objectKeys, array dictKeys
@@ -129,8 +173,7 @@ def getUniqueValuesInArray(tweets, objectKeys, dictKeys):
 				if found:
 					values.append(dictAttribute)
 	values = set(values)
-	if values == set():
-		values = []
+	values = list(values)
 	return values
 	
 ### input: array tweets, double t1, double t2
