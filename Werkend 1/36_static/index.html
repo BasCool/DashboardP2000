@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+.item1 { grid-area: header; }
+.item2 { grid-area: menu;}
+.item3 { grid-area: main;}
+.item4 { grid-area: right;}
+.item5 { grid-area: footer; }
+
+.grid-container {
+  display: grid;
+  grid-template-areas:
+    'header header header header header'
+    'menu main main right right'
+    'menu footer footer footer footer';
+  grid-gap: 10px;
+  background-color: #FFFFFF;
+  padding: 10px;
+}
+.grid-container > div {
+  background-color: rgba(0, 0, 0, 0);
+  text-align: left;
+  padding: 0px 0;
+  font-size: 15px;
+}
+
+textarea {
+   resize: none;
+}
+</style>
+
+<title>Letterlijk Basbest</title>
+<link rel="stylesheet" href="/style/layout.css"/>
+<link rel="stylesheet" href="/style/theme.css"/>
+<script src="/lib/jquery-2.1.1.min.js"></script>
+<script src="/lib/jquery.flot.min.js"></script>
+<script src="/lib/core.js"></script>
+<script src="/lib/charts.js"></script>
+<script src="/lib/log.js"></script>
+<script src="/lib/tweets.js"></script>
+<script src="/lib/form.js"></script>
+</head>
+<body class="grid-container">
+<div class="item1">
+	<h1>Letterlijk Basbest</h1>
+	<hr>
+</div>
+<div id='filter' class='item2'>
+	<h3>Filters</h3>
+	<form>
+<<<<<<< HEAD:Werkend 4.2.1/36_static/index.html
+	<div id='cities'>
+		<input type="submit" value="Search"/>
+		<p><b>Cities</b></p>
+		<textarea name='text' id='textbox1' rows="4" cols='25' locked></textarea>
+=======
+	<div id='regions'>
+		<input type="submit" value="Click me"/>
+		<p><b>Regions</b></p>
+		<ul>
+			<li style="display:block;"><input type="checkbox" name="adam" checked>Amsterdam</li>
+			<li style="display:block;"><input type="checkbox" name="rdam" checked>Rotterdam</li>
+			<li style="display:block;"><input type="checkbox" name="zwol" checked>Zwolle</li>
+			<li style="display:block;"><input type="checkbox" name="lwar" checked>Leeuwarden</li>
+			<li style="display:block;"><input type="checkbox" name="nhln" checked>Noord Holland Noord</li>
+			<li style="display:block;"><input type="checkbox" name="tilb" checked>Tilburg</li>
+			<li style="display:block;"><input type="checkbox" name="gtrb" checked>Geertruidenberg</li>
+			<li style="display:block;"><input type="checkbox" name="harw" checked>Harderwijk</li>
+			<li style="display:block;"><input type="checkbox" name="oldb" checked>Oldebroek</li>
+			<li style="display:block;"><input type="checkbox" name="oned" checked>Oost Nederland</li>
+		</ul>
+>>>>>>> 21b85cb49ebf2f80515dab1954522eba38ce067d:Werkend 1/36_static/index.html
+	</div>
+	<div id='services'>
+		<p><b>Services</b></p>
+		<ul>
+			<li style="display:block;"><input type="checkbox" name="police" id="one" checked>Police</li>
+			<li style="display:block;"><input type="checkbox" name="ambu" id="two" checked>Ambulance</li>
+			<li style="display:block;"><input type="checkbox" name="firebrig" id="three" checked>Fire Brigade</li>
+		</ul>
+	</div>
+	<div id='priority'>
+		<p><b>Priority</b></p>
+		<ul>
+			<li style="display:block;"><input type="checkbox" name="prio1" id="one" checked>First priority</li>
+			<li style="display:block;"><input type="checkbox" name="prio2" id="two" checked>Second priority</li>
+			<li style="display:block;"><input type="checkbox" name="prio3" id="three" checked>Third priority</li>
+		</ul>
+	</div>
+	<div id='time'>
+		<p><b>Time</b></p>
+			<label for="time-start">From:   </label></br>
+			<input id="time-start" type="time" name="time-start"></br>
+			<label for="time-end">To:     </label></br>
+			<input id="time-end" type="time" name="time-end">
+	</div>
+	</br>
+	<div>
+		<p><b>Date</b></p>
+			<label for="date-start">From:   </label></br>
+			<input id="date-start" type="date" name="date-start"></br>
+			<label for="date-end">To:     </label></br>
+			<input id="date-end" type="date" name="date-end">
+	</div>
+	</form>
+</div>
+
+
+
+<div id="filtered"  class="item3" width="40%"><h4 class="item3">Filterd Tweets</h4></div>
+
+<div id="unfiltered" class="item4" width="40%"><h4 class="item4">Unfilterd Tweets</h4></div>
+<div id='log2' class="item5"></div>
+
+
+<script>
+block('#unfiltered').tweets({
+  memory: 12
+});
+events.connect('unfil', '#unfiltered');
+
+block('#filtered').tweets({
+  memory: 12
+});
+events.connect('fil', '#filtered');
+
+block('#log2').log();
+events.connect('filterdisp', '#log2');
+
+block('#filter').form({
+    target: '/api/filter'
+});
+</script>
+</body>
+</html>
