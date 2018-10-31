@@ -2,7 +2,7 @@
 <html>
 <head>
 <style>
-.item1 { grid-area: header; }
+.item1 { grid-area: header;}
 .item2 { grid-area: menu;}
 .item3 { grid-area: main;}
 .item4 { grid-area: right;}
@@ -11,9 +11,9 @@
 .grid-container {
   display: grid;
   grid-template-areas:
-    'header header header header header'
-    'menu main main right right'
-    'menu footer footer footer footer';
+    'header header header header header header header header header header header header header'
+    'menu main main main main main main right right right right right right'
+    'menu footer footer footer footer footer footer footer footer footer footer footer footer';
   grid-gap: 10px;
   background-color: #FFFFFF;
   padding: 10px;
@@ -28,9 +28,11 @@
 textarea {
    resize: none;
 }
+
+
 </style>
 
-<title>Letterlijk Basbest</title>
+<title>P2000 Dashboard</title>
 <link rel="stylesheet" href="/style/layout.css"/>
 <link rel="stylesheet" href="/style/theme.css"/>
 <script src="/lib/jquery-2.1.1.min.js"></script>
@@ -41,9 +43,10 @@ textarea {
 <script src="/lib/tweets.js"></script>
 <script src="/lib/form.js"></script>
 </head>
+
 <body class="grid-container">
-<div id='knopjes' class="item1">
-	<h1>Letterlijk Basbest</h1>
+<div class="item1">
+	<h1 align="center">P2000 Dashboard</h1>
 	<hr>
 </div>
 
@@ -51,20 +54,20 @@ textarea {
 
 <div id='filter' class='item2'>
 	<form>
-	<div id='cities'>
-		<input type="submit" value="Click me"/>
+	<div id='cities' align="center">
+		<input type="submit" value="Search"/>
 		<p><b>Cities</b></p>
 		<textarea name='text' id='textbox1' rows="4" cols='25'></textarea>
 	</div>
-	<div id='services'>
+	<div id='services' align="center">
 		<p><b>Services</b></p>
 		<ul>
-			<li style="display:block;"><input type="checkbox" name="Police" id="one" checked>Police</li>
+			<li style="display:block;"><input type="checkbox" name="Police" id="one" checked>Ant fukkers</li>
 			<li style="display:block;"><input type="checkbox" name="Ambulance" id="two" checked>Ambulance</li>
 			<li style="display:block;"><input type="checkbox" name="Fire Department" id="three" checked>Fire department</li>
 		</ul>
 	</div>
-	<div id='priority'>
+	<div id='priority' align="center">
 		<p><b>Priority</b></p>
 		<ul>
 			<li style="display:block;"><input type="checkbox" name="Prio1" id="one" checked>First priority</li>
@@ -72,7 +75,7 @@ textarea {
 			<li style="display:block;"><input type="checkbox" name="Prio3" id="three" checked>Third priority</li>
 		</ul>
 	</div>
-	<div id='time'>
+	<div id='time' align="center">
 		<p><b>Time</b></p>
 			<label for="time-start">From:   </label></br>
 			<input id="time-start" type="time" name="time-start"></br>
@@ -80,7 +83,7 @@ textarea {
 			<input id="time-end" type="time" name="time-end">
 	</div>
 	</br>
-	<div>
+	<div id='date' align="center">
 		<p><b>Date</b></p>
 			<label for="date-start">From:   </label></br>
 			<input id="date-start" type="date" name="date-start"></br>
