@@ -4,7 +4,7 @@ import time
 priorities = [
 	["A1", "P 1", "Prio: 1", "PRIO 1", "Prio 1"],
 	["A2", "P 2", "Prio: 2", "PRIO 2", "Prio 2"],
-	["A3", "P 3", "Prio: 3", "PRIO 3", "Prio 3"]
+	["B", "P 3", "Prio: 3", "PRIO 3", "Prio 3"]
 ]
 
 ### input: string date
