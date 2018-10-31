@@ -139,8 +139,7 @@ def getUniqueValuesInArray(tweets, objectKeys, dictKeys):
 def getTweetsInTimeFrame(tweets, t1, t2):
 	filtered = []
 	for tweet in tweets:
-		unix = getUnixFromDate(tweet["created_at"])
-		if unix > t1 and unix < t2:
+		if isTweetInTimeFrame(tweet, t1, t2):
 			filtered.append(tweet)
 	return filtered
 	
@@ -149,14 +148,8 @@ def getTweetsInTimeFrame(tweets, t1, t2):
 ### example: getTweetsWithPriority(tweets, 1)
 def getTweetsWithPriority(tweets, num):
 	filtered = []
-	substrings = priorities[num - 1]
 	for tweet in tweets:
-		isPriority = False
-		for substring in substrings:
-			if not tweet["text"].find(substring) == -1:
-				isPriority = True
-				break
-		if isPriority:
+		if isTweetPriority(tweet, num):
 			filtered.append(tweet)
 	return filtered
 
@@ -165,21 +158,9 @@ def getTweetsWithPriority(tweets, num):
 ### example: getTweetsWithService(tweets, "fireBrigade")
 def getTweetsWithService(tweets, service):
 	filtered = []
-	substrings = None
-	found = True
-	try:
-		substrings = services[service]
-	except AttributeError:
-		found = False
-	if found:
-		for tweet in tweets:
-			isPriority = False
-			for substring in substrings:
-				if not tweet["text"].find(substring) == -1:
-					isPriority = True
-					break
-			if isPriority:
-				filtered.append(tweet)
+	for tweet in tweets:
+		if isTweetService(tweet, service):
+			filtered.append(tweet)
 	return filtered
 
 ### input: object attribute, array keys, string val
@@ -233,8 +214,43 @@ def hasTweetAttributesInArray(objectAttribute, objectKeys, dictKeys, val):
 				return True
 	return False
 
+## input: object tweet, int priority
+## output: bool
+## example: isTweetPriority(tweet, 1)
+def isTweetPriority(tweet, priority):
+	substrings = None
+	try:
+		substrings = priorities[num - 1]
+	except AttributeError:
+		return False
+	for substring in substrings:
+		if not tweet["text"].find(substring) == -1:
+			return True
+	return False
+	
+## input: object tweet, string service
+## output: bool
+## example: isTweetService(tweet, "fireBrigade")
+def isTweetService(tweet, service):
+	substrings = None
+	try:
+		substrings = services[service]
+	except AttributeError:
+		return False
+	for substring in substrings:
+		if not tweet["text"].find(substring) == -1:
+			return True
+	return False
+			
+## input: object tweet, double t1, double t2
+## output: bool
+## example: isTweetInTimeFrame(tweet, 1379528870.0, 1379530847.0)
+def isTweetInTimeFrame(tweet, t1, t2):
+	unix = getUnixFromDate(tweet["created_at"])
+	return unix > t1 and unix < t2
+		
 ### input: array tweets
-### example: printContents(tweets):
+### example: printContents(tweets)
 def printContents(tweets):
 	for tweet in tweets:
 		print(tweet["text"])
