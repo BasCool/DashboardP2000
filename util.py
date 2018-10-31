@@ -173,3 +173,19 @@ def getTweetsInTimeFrame(tweets, t1, t2):
 		if unix > t1 and unix < t2:
 			filtered.append(tweet)
 	return filtered
+	
+### input: array tweets, double t1, double t2
+### output: array 
+### example: getTweetsWithPriority(tweets, 1)
+def getTweetsWithPriority(tweets, num):
+	filtered = []
+	substrings = priorities[num - 1]
+	for tweet in tweets:
+		isPriority = False
+		for substring in substrings:
+			if not tweet["text"].find(substring) == -1:
+				isPriority = True
+				break
+		if isPriority:
+			filtered.append(tweet)
+	return filtered
