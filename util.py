@@ -221,27 +221,25 @@ def hasTweetAttributesWithFind(attribute, keys, substring):
 ### input: object tweet, array objectKeys, array dictKeys, string val
 ### output: bool
 ### example: hasTweetAttributesInArray(tweet, ["entities", "hashtags"], ["text"], "Zwolle")
-def hasTweetAttributesInArray(tweet, objectKeys, dictKeys, val):
-	filtered = []
-	for objectAttribute in tweets:
-		original = objectAttribute
-		found = True
-		for key in objectKeys:
-			try: 
-				objectAttribute = objectAttribute[key]
-			except (KeyError, IndexError):
-				found = False
-				break
-		if found: 
-			for member in objectAttribute:
-				dictAttribute = member
-				found = True
-				for key in dictKeys:
-					try: 
-						dictAttribute = dictAttribute[key]
-					except (KeyError, IndexError):
-						found = False
-						break
-				if found and dictAttribute == val:
-					return True
+def hasTweetAttributesInArray(objectAttribute, objectKeys, dictKeys, val):
+	original = objectAttribute
+	found = True
+	for key in objectKeys:
+		try: 
+			objectAttribute = objectAttribute[key]
+		except (KeyError, IndexError):
+			found = False
+			break
+	if found: 
+		for member in objectAttribute:
+			dictAttribute = member
+			found = True
+			for key in dictKeys:
+				try: 
+					dictAttribute = dictAttribute[key]
+				except (KeyError, IndexError):
+					found = False
+					break
+			if found and dictAttribute == val:
+				return True
 	return False
