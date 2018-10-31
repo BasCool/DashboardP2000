@@ -205,3 +205,9 @@ def hasTweetAttributesInArray(objectAttribute, objectKeys, dictKeys, val):
 			if found and dictAttribute == val:
 				return True
 	return False
+
+### input: array tweets
+### example: printContents(tweet):
+def printContents(tweets):
+	for tweet in tweets:
+		print(tweet["text"])
