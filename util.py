@@ -4,14 +4,28 @@ import time
 priorities = [
 	["A1", "P 1", "Prio: 1", "PRIO 1", "Prio 1"],
 	["A2", "P 2", "Prio: 2", "PRIO 2", "Prio 2"],
-	["A3", "P 3", "Prio: 3", "PRIO 3", "Prio 3"]
+	["B", "P 3", "Prio: 3", "PRIO 3", "Prio 3"]
 ]
+services = {
+	"police": ["Mishandeling", "Vechtpartij"],
+	"ambulance": ["A1" , "A2", "B", "AMBU", "Ambulance", "Ambu", "ziekenhuis"],
+	"fireBrigade": ["Rookmelder", "Soort Inzet HV: ", "Brand", " TS", "brand", "brandmelding"]
+}
 
 ### input: string date
 ### output: double
 ### example: getUnixFromDate("Wed Sep 18 20:17:17 +0000 2013")
 def getUnixFromDate(date):
 	return time.mktime(time.strptime(date,"%a %b %d %H:%M:%S +0000 %Y"))
+
+### input: array array, typeless object
+### output: typeless 
+### example: findInArray(tweets, tweet)
+def findInArray(array, object):
+	for member in array:
+		if member == object:
+			return member
+	return
 
 ### output: string
 ### example: getTweetsString()
@@ -42,17 +56,9 @@ def getTweetsArray():
 ### example: getTweetsByAttributes(tweets, ["user", "name"], "p2000rotterdam")
 def getTweetsByAttributes(tweets, keys, val):
 	filtered = []
-	for attribute in tweets:
-		original = attribute;
-		found = True
-		for key in keys:
-			try: 
-				attribute = attribute[key]
-			except (KeyError, IndexError):
-				found = False
-				break
-		if found and attribute == val: 
-			filtered.append(original)
+	for tweet in tweets:
+		if hasTweetAttributes(tweet, keys, val):
+			filtered.append(tweet)
 	return filtered
 
 ### input: array tweets, array keys, string substring
@@ -60,17 +66,9 @@ def getTweetsByAttributes(tweets, keys, val):
 ### example: getTweetsByAttributesWithFind(tweets, ["user", "name"], "amsterdam")
 def getTweetsByAttributesWithFind(tweets, keys, substring):
 	filtered = []
-	for attribute in tweets:
-		original = attribute;
-		found = True
-		for key in keys:
-			try: 
-				attribute = attribute[key]
-			except (KeyError, IndexError):
-				found = False
-				break
-		if found and not attribute.find(substring) == -1: 
-			filtered.append(original)
+	for tweet in tweets:
+		if hasTweetAttributesWithFind(tweet, keys, substring):
+			filtered.append(tweet)
 	return filtered
 	
 ### input: array tweets, array objectKeys, array dictKeys, string val
@@ -78,28 +76,9 @@ def getTweetsByAttributesWithFind(tweets, keys, substring):
 ### example: getTweetsByAttributesInArray(tweets, ["entities", "hashtags"], ["text"], "Zwolle")
 def getTweetsByAttributesInArray(tweets, objectKeys, dictKeys, val):
 	filtered = []
-	for objectAttribute in tweets:
-		original = objectAttribute
-		found = True
-		for key in objectKeys:
-			try: 
-				objectAttribute = objectAttribute[key]
-			except (KeyError, IndexError):
-				found = False
-				break
-		if found: 
-			for member in objectAttribute:
-				dictAttribute = member
-				found = True
-				for key in dictKeys:
-					try: 
-						dictAttribute = dictAttribute[key]
-					except (KeyError, IndexError):
-						found = False
-						break
-				if found and dictAttribute == val:
-					filtered.append(original)
-					break
+	for tweet in tweets:
+		if hasTweetsAttributesInArray(tweet, objectKeys, dictKeys, val):
+			filtered.append(tweet)
 	return filtered
 
 ### input: array tweets, array keys
@@ -160,7 +139,118 @@ def getUniqueValuesInArray(tweets, objectKeys, dictKeys):
 def getTweetsInTimeFrame(tweets, t1, t2):
 	filtered = []
 	for tweet in tweets:
-		unix = getUnixFromDate(tweet["created_at"])
-		if unix > t1 and unix < t2:
+		if isTweetInTimeFrame(tweet, t1, t2):
 			filtered.append(tweet)
 	return filtered
+	
+### input: array tweets, int num
+### output: array 
+### example: getTweetsWithPriority(tweets, 1)
+def getTweetsWithPriority(tweets, num):
+	filtered = []
+	for tweet in tweets:
+		if isTweetPriority(tweet, num):
+			filtered.append(tweet)
+	return filtered
+
+### input: array tweets, string service
+### output: array 
+### example: getTweetsWithService(tweets, "fireBrigade")
+def getTweetsWithService(tweets, service):
+	filtered = []
+	for tweet in tweets:
+		if isTweetService(tweet, service):
+			filtered.append(tweet)
+	return filtered
+
+### input: object attribute, array keys, string val
+### output: bool 
+### example: hasTweetAttributes(tweet, ["user", "name"], "p2000rotterdam")
+def hasTweetAttributes(attribute, keys, val):
+	found = True
+	for key in keys:
+		try: 
+			attribute = attribute[key]
+		except (KeyError, IndexError):
+			found = False
+			break
+	return found and attribute == val
+
+### input: object attribute, array keys, string substring
+### output: bool
+### example: hasTweetAttributesWithFind(tweet, ["user", "name"], "amsterdam")
+def hasTweetAttributesWithFind(attribute, keys, substring):
+	found = True
+	for key in keys:
+		try: 
+			attribute = attribute[key]
+		except (KeyError, IndexError):
+			found = False
+			break
+	return found and not attribute.find(substring) == -1
+	
+### input: object objectAttribute, array objectKeys, array dictKeys, string val
+### output: bool
+### example: hasTweetAttributesInArray(tweet, ["entities", "hashtags"], ["text"], "Zwolle")
+def hasTweetAttributesInArray(objectAttribute, objectKeys, dictKeys, val):
+	found = True
+	for key in objectKeys:
+		try: 
+			objectAttribute = objectAttribute[key]
+		except (KeyError, IndexError):
+			found = False
+			break
+	if found: 
+		for member in objectAttribute:
+			dictAttribute = member
+			found = True
+			for key in dictKeys:
+				try: 
+					dictAttribute = dictAttribute[key]
+				except (KeyError, IndexError):
+					found = False
+					break
+			if found and dictAttribute == val:
+				return True
+	return False
+
+## input: object tweet, int priority
+## output: bool
+## example: isTweetPriority(tweet, 1)
+def isTweetPriority(tweet, priority):
+	substrings = None
+	try:
+		substrings = priorities[num - 1]
+	except AttributeError:
+		return False
+	for substring in substrings:
+		if not tweet["text"].find(substring) == -1:
+			return True
+	return False
+	
+## input: object tweet, string service
+## output: bool
+## example: isTweetService(tweet, "fireBrigade")
+def isTweetService(tweet, service):
+	substrings = None
+	try:
+		substrings = services[service]
+	except AttributeError:
+		return False
+	for substring in substrings:
+		if not tweet["text"].find(substring) == -1:
+			return True
+	return False
+			
+## input: object tweet, double t1, double t2
+## output: bool
+## example: isTweetInTimeFrame(tweet, 1379528870.0, 1379530847.0)
+def isTweetInTimeFrame(tweet, t1, t2):
+	unix = getUnixFromDate(tweet["created_at"])
+	return unix > t1 and unix < t2
+		
+### input: array tweets
+### example: printContents(tweets)
+def printContents(tweets):
+	for tweet in tweets:
+		print(tweet["text"])
