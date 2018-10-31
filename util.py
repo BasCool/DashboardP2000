@@ -189,3 +189,18 @@ def getTweetsWithPriority(tweets, num):
 		if isPriority:
 			filtered.append(tweet)
 	return filtered
+
+### input: array tweets, array keys, string val
+### output: array 
+### example: hasTweetAttributes(tweet, ["user", "name"], "p2000rotterdam")
+def hasTweetAttributes(attribute, keys, val):
+	original = attribute;
+	found = True
+	for key in keys:
+		try: 
+			attribute = attribute[key]
+		except (KeyError, IndexError):
+			found = False
+			break
+	if found and attribute == val: 
+		return True
