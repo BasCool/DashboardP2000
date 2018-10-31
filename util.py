@@ -13,6 +13,15 @@ priorities = [
 def getUnixFromDate(date):
 	return time.mktime(time.strptime(date,"%a %b %d %H:%M:%S +0000 %Y"))
 
+### input: array array, typeless object
+### output: typeless 
+### example: findInArray(tweets, tweet)
+def findInArray(array, object):
+	for member in array:
+		if member == object:
+			return member
+	return
+
 ### output: string
 ### example: getTweetsString()
 def getTweetsString():
