@@ -54,14 +54,46 @@ console.log([text,one,two,three]);
 
 <div id='messages' class='item5'></div>
 
-<div id='button' class='item2'>
-    <input type="button" value="Click me" onclick="msg()">
-    <br><textarea name='text' id='textbox1' style='width: 100%'></textarea>
-	<br><input type="checkbox" name="vehicle1" id="one"> I have a bike<br>
-    <br><input type="checkbox" name="vehicle2" id="two"> I have a car<br>
-    <br><input type="checkbox" name="vehicle3" id="three" checked> I have a boat<br><br>
-    
+
+<div id='filter' class='item2'>
+	<div id='cities'>
+		<p><b>Cities</b></p>
+		<textarea name='text' id='textbox1' rows="4" cols='25'></textarea>
+	</div>
+	<div id='services'>
+		<p><b>Services</b></p>
+		<ul>
+			<li style="display:block;"><input type="checkbox" name="Police" id="one" checked>Police</li>
+			<li style="display:block;"><input type="checkbox" name="Ambulance" id="two" checked>Ambulance</li>
+			<li style="display:block;"><input type="checkbox" name="Fire Department" id="three" checked>Fire department</li>
+		</ul>
+	</div>
+	<div id='priority'>
+		<p><b>Priority</b></p>
+		<ul>
+			<li style="display:block;"><input type="checkbox" name="Prio1" id="one" checked>First priority</li>
+			<li style="display:block;"><input type="checkbox" name="Prio2" id="two" checked>Second priority</li>
+			<li style="display:block;"><input type="checkbox" name="Prio3" id="three" checked>Third priority</li>
+		</ul>
+	</div>
+	<div id='time'>
+		<p><b>Time</b></p>
+			<label for="time-start">From:   </label></br>
+			<input id="time-start" type="time" name="time-end"></br>
+			<label for="time-end">To:     </label></br>
+			<input id="time-end" type="time" name="time-end">
+	</div>
+	</br>
+	<div>
+		<p><b>Date</b></p>
+			<label for="date-start">From:   </label></br>
+			<input id="date-start" type="date" name="date-start"></br>
+			<label for="date-start">To:     </label></br>
+			<input id="date-start" type="date" name="date-start">
+	</div>
 </div>
+
+
 <script>
 block('#unfiltered').tweets({
   memory: 12
