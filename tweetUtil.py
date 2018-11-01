@@ -18,6 +18,20 @@ services = {
 def getUnixFromDate(date):
 	return time.mktime(time.strptime(date,"%a %b %d %H:%M:%S +0000 %Y"))
 
+### input: string string
+### output: double
+### example: getUnixFromDateString("10-10-2018")
+def getUnixFromDateString(string):
+	return time.mktime(time.strptime(string, "%d-%m-%Y"))
+
+### input: string string
+### output: double
+### example: getUnixFromTimeString("22:00")
+def getUnixFromTimeString(string):
+	string = string.replace(":", "/")
+	string = "1-1-1970/" + string
+	return time.mktime(time.strptime(string, "%d-%m-%Y/%H/%M"))
+	
 ### input: array array, typeless object
 ### output: typeless 
 ### example: findInArray(tweets, tweet)
@@ -224,7 +238,7 @@ def hasTweetAttributesWithFind(attribute, keys, substring):
 		except (KeyError, IndexError):
 			found = False
 			break
-	return found and not attribute.find(substring) == -1
+	return found and not attribute.lower().find(substring.lower()) == -1
 	
 ### input: object objectAttribute, array objectKeys, array dictKeys, string val
 ### output: bool
@@ -319,7 +333,12 @@ def convertFilters(form):
 			"prio2": False,
 			"prio3": False
 		},
-		"time": 0
+		"time": {
+			"startt": 0,
+			"endt": 0,
+			"startd": 0,
+			"endd": 0
+		}
 	}
 	for index in form:
 		if index == "adam" or index == "rdam" or index == "zwol" or index == "lwar" or index == "nhln" or index == "tilb" or index == "gtrb" or index == "harw" or index == "oldb" or index == "oned":
@@ -331,9 +350,12 @@ def convertFilters(form):
 		elif index == "prio1" or index == "prio2" or index == "prio3":
 			if not form[index] == []:
 				converted["priorities"][index] = True
-		#elif index == "time-start" or index == "time-end" or index == "date-start" or index == "date-end":
-			#if not form[index] == "":
-				#
+		elif index == "date-start" or index == "date-end":
+			if not form[index] == "":
+				converted["time"][index] = getUnixFromDateString(form[index])
+		elif index == "time-start" or index == "time-end":
+			if not form[index] == "":
+				converted["time"][index] = getUnixFromTimeString(form[index])
 	return converted
 
 ### input: object tweet, dictionary filters
@@ -366,8 +388,8 @@ def filterTweet(tweet, filters):
 						region = "Oldeburg"
 					elif attribute == "oned":
 						region = "MON"
-					if not hasTweetAttributesWithFind(tweet, ["user", "name"], region) and not hasTweetAttributesWithFind(tweet, ["text"], region):
-						return False
+					if hasTweetAttributesWithFind(tweet, ["user", "name"], region) or hasTweetAttributesWithFind(tweet, ["text"], region):
+						return True
 		elif filter == "services":
 			for attribute in filters[filter]:
 				if filters[filter][attribute]:
@@ -376,8 +398,8 @@ def filterTweet(tweet, filters):
 						service = "ambulance"
 					elif attribute == "firebrig":
 						service = "fireBrigade"
-					if not isTweetService(tweet, service):
-						return False
+					if isTweetService(tweet, service):
+						return True
 		elif filter == "priorities":
 			for attribute in filters[filter]:
 				if filters[filter][attribute]:
@@ -388,8 +410,26 @@ def filterTweet(tweet, filters):
 						priority = 2
 					elif attribute == "prio3":
 						priority = 3
-					if not isTweetPriority(tweet, priority):
-						return False
-		#elif type == "time":
-			#
-	return True
+					if isTweetPriority(tweet, priority):
+						return True
+		elif type == "time":
+			filter = filters[type]
+			t1 = None
+			t2 = None
+			if filter["startt"] and filter["startd"]:
+				t1 = getUnixFromDateString(filter["startd"]) + getUnixFromTimeString(filter["startt"])
+			elif filter["startd"]:
+				t1 = getUnixFromDateString(filter["startd"]) 
+			elif filter["startt"]:
+				print("Something with Tweet's UNIX%86400 == startt")
+			else:
+				t1 = 0
+			if filter["endt"] and filter["endd"]:
+				t2 = getUnixFromDateString(filter["endd"]) + getUnixFromTimeString(filter["endt"])
+			elif filter["endd"]:
+				t2 = getUnixFromDateString(filter["endd"])
+			elif filter["endt"]:
+				print("Something with Tweet's UNIX%86400 == endt")
+			else:
+				t2 = time.time()
+	return False
