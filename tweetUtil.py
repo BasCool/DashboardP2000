@@ -334,10 +334,10 @@ def convertFilters(form):
 			"prio3": False
 		},
 		"time": {
-			"startt": "",
-			"endt": "",
-			"startd": "",
-			"endd": ""
+			"start-time": -1,
+			"end-time": -1,
+			"start-date": -1,
+			"end-date": -1
 		}
 	}
 	for index in form:
@@ -423,14 +423,14 @@ def filterTweet(tweet, filters):
 			filter = filters[type]
 			t1 = 0
 			t2 = time.time()
-			startd = filter["startd"]
-			endd = filter["endd"]
-			startt = filter["startt"]
-			endt = filter["endt"]
-			if not startd == "":
-				t1 = getUnixFromDateString(startd)
-			if not endd == "":
-				t2 = getUnixFromDateString(endd)
+			startd = filter["start-date"]
+			endd = filter["end-date"]
+			#startt = filter["start-time"]
+			#endt = filter["end-time"]
+			if not startd == -1:
+				t1 = startd
+			if not endd == -1:
+				t2 = endd
 			if isTweetInTimeFrame(tweet, t1, t2):
 				timeFilter = True
 	return citiesFilter and prioritiesFilter and servicesFilter and timeFilter
