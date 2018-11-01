@@ -1,5 +1,4 @@
-import json
-import time
+import json, time
 
 priorities = [
 	["A1", "P 1", "Prio: 1", "PRIO 1", "Prio 1:", "HV 1 ", "BR 1 "],
@@ -11,9 +10,10 @@ services = {
 	"ambulance": ["A1 " , "A2 ", "B "],
 	"fireBrigade": ["BR 1 ", "BR 2 ", "HV 1 ", "HV 2 " , "HV 3", "PRIO 1 ", "PRIO 2 ", "PRIO 3 "]
 }
-regions = {"Amsterdam", "Rotterdam", "Zwolle", "Leeuwarden", "NHN", "Tilburg", "Geertruidenberg", "Hardewijk", "Oldebroek", "MON"}
 
-debug = True
+regions = {"Amsterdam", "Rotterdam", "Zwolle", "Leeuwarden", "NHN", "Tilburg", "Geertruidenberg", "Harderwijk", "Oldeburg", "MON"}
+
+debug = False
 
 ### input: string date
 ### output: double
@@ -314,7 +314,7 @@ def printContents(tweets):
 
 ### input: dictionary filters
 ### output: dictionary
-### example: print(convertFilters({'adam': ['on'], 'rdam': ['on'], 'zwol': ['on'], 'lwar': ['on'], 'nhln': ['on'], 'tilb': ['on'], 'gtrb': ['on'], 'harw': ['on'], 'oldb': ['on'], 'oned': ['on'], 'police': ['on'], 'ambu': ['on'], 'firebrig': ['on'], 'prio1': ['on'], 'prio2': ['on'], 'prio3': ['on'], 'time-start': '', 'time-end': '', 'date-start': '', 'date-end': ''}))
+### example: convertFilters({'adam': ['on'], 'rdam': ['on'], 'zwol': ['on'], 'lwar': ['on'], 'nhln': ['on'], 'tilb': ['on'], 'gtrb': ['on'], 'harw': ['on'], 'oldb': ['on'], 'oned': ['on'], 'police': ['on'], 'ambu': ['on'], 'firebrig': ['on'], 'prio1': ['on'], 'prio2': ['on'], 'prio3': ['on'], 'time-start': '', 'time-end': '', 'date-start': '', 'date-end': ''})
 def convertFilters(form):
 	converted = {
 		"cities": {
