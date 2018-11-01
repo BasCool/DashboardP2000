@@ -14,8 +14,14 @@
 <script src="/lib/form.js"></script>
 <link rel="shortcut icon" href="favicon.ico" /> 
 <style>
-div {
-	
+.top {
+	background-color: #1dcaff; 
+	border-top-style: solid; 
+	border-color: #1dcaff; 
+	margin-top: 0px; 
+	margin-bottom: 0px; 
+	margin-right: 0px; 
+	margin-left: 0px;
 }
 body {
     border: 0px solid blue;
@@ -32,15 +38,27 @@ html {
     margin-right: 0px;
     margin-left: 0px;
 }
-
+.filterbox {  
+	width: 15%; 
+	float: left; 
+	margin:0 0 25px;
+	overflow:hidden;
+	padding:20px;
+	background-color:#e6ecf0;
+	border:1px solid #e6ecf0;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	margin-left: 10px;
+	margin-right: 10px;
+}
 </style>
 </head>
 <body>
-<div style="background-color: #1dcaff; border-top-style: solid; border-color: #1dcaff; margin-top: 0px; margin-bottom: 0px; margin-right: 0px; margin-left: 0px;">
+<div class="top">
 	<h1 style="color: white; margin-left: 10px;">P2000 Dashboard</h1>
 	<hr>
 </div>
-<div id='filter' style="width: 15%; float: left; margin-left: 15px;">
+<div id='filter' style="" class="filterbox">
 	<h3>Filters</h3>
 	<form>
 	<div id='regions'>
@@ -96,7 +114,7 @@ html {
 
 
 <div id="filtered" style="width: 40%; float: left; max-height:950px;"><h4>Filtered Tweets</h4></div>
-<div id="unfiltered" style="width: 40%; float: right; max-height:950px;"><h4>Unfiltered Tweets</h4></div>
+<div id="unfiltered" style="width: 40%; float: left; max-height:950px;"><h4>Unfiltered Tweets</h4></div>
 
 
 <script>
