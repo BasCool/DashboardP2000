@@ -12,7 +12,7 @@ services = {
 	"fireBrigade": ["Rookmelder", "Soort Inzet HV: ", "Brand", " TS", "brand", "brandmelding"]
 }
 
-debug = False
+debug = True
 
 ### input: string date
 ### output: double
@@ -432,17 +432,19 @@ def filterTweet(tweet, filters):
 			if not endd == -1:
 				t2 = endd
 			if isTweetInTimeFrame(tweet, t1, t2):
-				startt = filter["time-start"]
+				startt = filter["time-start"] 
 				endt = filter["time-end"]
 				remainder = getUnixFromDate(tweet["created_at"])%86400
+				if debug:
+					print("startt "+str(startt)+", endt: "+str(endt)+", remainder: "+str(remainder))
 				if not startt == -1 and not endt == -1:
-					timeFilter = remainder > startt and remainder < endt
+					timeFilter = remainder >= startt - 3600 and remainder <= endt - 3600
 				elif not startt == -1:
-					timeFilter = remainder > startt
+					timeFilter = remainder >= startt - 3600
 				elif not endt == -1:
-					timeFilter = remainder < endt
+					timeFilter = remainder <= endt - 3600
 				else:
 					timeFilter = True
 	if debug:
-		print("cF"+str(citiesFilter)+" pF"+str(prioritiesFilter)+" sF"+str(servicesFilter)+" tF"+str(timeFilter))
+		print("cF: "+str(citiesFilter)+", pF: "+str(prioritiesFilter)+", sF: "+str(servicesFilter)+", tF: "+str(timeFilter))
 	return citiesFilter and prioritiesFilter and servicesFilter and timeFilter
