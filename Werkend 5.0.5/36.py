@@ -12,7 +12,6 @@ filterset = {'adam': ['on'], 'rdam': ['on'], 'zwol': ['on'], 'lwar': ['on'], 'nh
 root_content_path = '36_static'
 
 def add_request_handlers(httpd):
-    httpd.add_route('/api/order', eca.http.GenerateEvent('order'), methods=['POST'])
     httpd.add_route('/api/filter', eca.http.GenerateEvent('filterevent'), methods=['POST'])
     httpd.add_content('/lib/', '36_static/lib')
     httpd.add_content('/style/', '36_static/style')

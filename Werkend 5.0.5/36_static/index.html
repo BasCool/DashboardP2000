@@ -1,23 +1,43 @@
 <!DOCTYPE html>
 <html>
 <head>
-
 <title>@BasBankje</title>
-<link rel="stylesheet" href="/style/layout.css"/>
 <link rel="stylesheet" href="/style/theme.css"/>
+<link rel="stylesheet" href="/style/layout.css"/>
+
 <script src="/lib/jquery-2.1.1.min.js"></script>
 <script src="/lib/jquery.flot.min.js"></script>
 <script src="/lib/core.js"></script>
-<script src="/lib/charts.js"></script>
-<script src="/lib/log.js"></script>
+<!--script src="/lib/charts.js"></script>
+<script src="/lib/log.js"></script-->
 <script src="/lib/tweets.js"></script>
 <script src="/lib/form.js"></script>
 <link rel="shortcut icon" href="favicon.ico" /> 
+<style>
+div {
+	
+}
+body {
+    border: 0px solid blue;
+	
+	margin-top: 0px;
+    margin-bottom: 0px;
+    margin-right: 0px;
+    margin-left: 0px;
+}
+html {
+    border: 0px solid yellow;
+	margin-top: 0px;
+    margin-bottom: 0px;
+    margin-right: 0px;
+    margin-left: 0px;
+}
 
+</style>
 </head>
 <body>
-<div style="background-color: #EEEEEE">
-	<h1>P2000 Dashboard</h1>
+<div style="background-color: #1dcaff; border-top-style: solid; border-color: #1dcaff; margin-top: 0px; margin-bottom: 0px; margin-right: 0px; margin-left: 0px;">
+	<h1 style="color: white; margin-left: 10px;">P2000 Dashboard</h1>
 	<hr>
 </div>
 <div id='filter' style="width: 20%; float: left;">
@@ -77,12 +97,6 @@
 
 <div id="filtered" style="width: 40%; float: left; max-height:950px;"><h4>Filtered Tweets</h4></div>
 <div id="unfiltered" style="width: 40%; float: right; max-height:950px;"><h4>Unfiltered Tweets</h4></div>
-<div style="width: 100%; float: left;">
-<hr>
-Created by Guido de Jong, Gies den Broeder, Bas Kool, Herbert Keurhorst, Frans Schooltink and Raoul Timmer (and Bas Bankje)
-</div>
-
-
 
 
 <script>

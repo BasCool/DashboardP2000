@@ -334,10 +334,10 @@ def convertFilters(form):
 			"prio3": False
 		},
 		"time": {
-			"startt": -1,
-			"endt": -1,
-			"startd": -1,
-			"endd": -1
+			"startt": "",
+			"endt": "",
+			"startd": "",
+			"endd": ""
 		}
 	}
 	for index in form:
@@ -366,7 +366,7 @@ def filterTweet(tweet, filters):
 	citiesFilter = False
 	servicesFilter = False
 	prioritiesFilter = False
-	timeFilter = True
+	timeFilter = False
 	for filter in filters:
 		if filter == "cities":
 			for attribute in filters[filter]:
@@ -419,28 +419,18 @@ def filterTweet(tweet, filters):
 					if isTweetPriority(tweet, priority):
 						prioritiesFilter = True
 						break
-		# elif type == "time":
-			# filter = filters[type]
-			# t1 = None
-			# t2 = None
-			# if filter["startt"] and filter["startd"]:
-				# t1 = getUnixFromDateString(filter["startd"]) + getUnixFromTimeString(filter["startt"])
-			# elif filter["startd"]:
-				# t1 = getUnixFromDateString(filter["startd"]) 
-			# elif filter["startt"]:
-				# tweetUnix = getUnixFromDate(tweet["created_at"])
-				
-				# print("Something with Tweet's UNIX%86400 == startt")
-			# else:
-				# t1 = 0
-			# if filter["endt"] and filter["endd"]:
-				# t2 = getUnixFromDateString(filter["endd"]) + getUnixFromTimeString(filter["endt"])
-			# elif filter["endd"]:
-				# t2 = getUnixFromDateString(filter["endd"])
-			# elif filter["endt"]:
-				# tweetUnix = getUnixFromDate(tweet["created_at"])
-			
-				# print("Something with Tweet's UNIX%86400 == endt")
-			# else:
-				# t2 = time.time()
+		elif type == "time":
+			filter = filters[type]
+			t1 = 0
+			t2 = time.time()
+			startd = filter["startd"]
+			endd = filter["endd"]
+			startt = filter["startt"]
+			endt = filter["endt"]
+			if not startd == "":
+				t1 = getUnixFromDateString(startd)
+			if not endd == "":
+				t2 = getUnixFromDateString(endd)
+			if isTweetInTimeFrame(tweet, t1, t2):
+				timeFilter = True
 	return citiesFilter and prioritiesFilter and servicesFilter and timeFilter
