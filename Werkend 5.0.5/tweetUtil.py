@@ -2,15 +2,17 @@ import json
 import time
 
 priorities = [
-	["A1", "P 1", "Prio: 1", "PRIO 1", "Prio 1"],
-	["A2", "P 2", "Prio: 2", "PRIO 2", "Prio 2"],
-	["B", "P 3", "Prio: 3", "PRIO 3", "Prio 3"]
+	["A1", "P 1", "Prio: 1", "PRIO 1", "Prio 1:"],
+	["A2", "P 2", "Prio: 2", "PRIO 2", "Prio 2:"],
+	["B ", "P 3", "Prio: 3", "PRIO 3", "Prio 3:"]
 ]
 services = {
-	"police": ["Mishandeling", "Vechtpartij"],
-	"ambulance": ["A1" , "A2", "B", "AMBU", "Ambulance", "Ambu", "ziekenhuis"],
-	"fireBrigade": ["Rookmelder", "Soort Inzet HV: ", "Brand", " TS", "brand", "brandmelding"]
+	"police": ["Prio 1:", "Prio 2:", "Prio 3:", "Prio: 1 ", "Prio: 2 ", "Prio: 3 "],
+	"ambulance": ["A1 " , "A2 ", "B ", "AMBU", "Ambulance", "Ambu", "ziekenhuis"],
+	"fireBrigade": ["PRIO 1 ", "PRIO 2 ", "PRIO 3 ", "Rookmelder", "Soort Inzet HV: ", "Brand", " TS", "brand", "brandmelding"]
 }
+
+debug = False
 
 ### input: string date
 ### output: double
@@ -22,15 +24,15 @@ def getUnixFromDate(date):
 ### output: double
 ### example: getUnixFromDateString("10-10-2018")
 def getUnixFromDateString(string):
-	return time.mktime(time.strptime(string, "%d-%m-%Y"))
+	return time.mktime(time.strptime(string, "%Y-%m-%d"))
 
 ### input: string string
 ### output: double
 ### example: getUnixFromTimeString("22:00")
 def getUnixFromTimeString(string):
 	string = string.replace(":", "/")
-	string = "1-1-1970/" + string
-	return time.mktime(time.strptime(string, "%d-%m-%Y/%H/%M"))
+	string = "1970-1-1/" + string
+	return time.mktime(time.strptime(string, "%Y-%m-%d/%H/%M"))
 	
 ### input: array array, typeless object
 ### output: typeless 
@@ -230,7 +232,7 @@ def hasTweetAttributes(attribute, keys, val):
 ### input: object attribute, array keys, string substring
 ### output: bool
 ### example: hasTweetAttributesWithFind(tweet, ["user", "name"], "amsterdam")
-def hasTweetAttributesWithFind(attribute, keys, substring):
+def hasTweetAttributesWithFind(attribute, keys, substring, lower=True):
 	found = True
 	for key in keys:
 		try: 
@@ -238,7 +240,10 @@ def hasTweetAttributesWithFind(attribute, keys, substring):
 		except (KeyError, IndexError):
 			found = False
 			break
-	return found and not attribute.lower().find(substring.lower()) == -1
+	if not lower:
+		return found and not attribute.find(substring) == -1
+	else:
+		return found and not attribute.lower().find(substring.lower()) == -1
 	
 ### input: object objectAttribute, array objectKeys, array dictKeys, string val
 ### output: bool
@@ -275,7 +280,7 @@ def isTweetPriority(tweet, priority):
 	except AttributeError:
 		return False
 	for substring in substrings:
-		if not tweet["text"].find(substring) == -1:
+		if hasTweetAttributesWithFind(tweet, ["text"], substring, False):
 			return True
 	return False
 	
@@ -289,7 +294,7 @@ def isTweetService(tweet, service):
 	except AttributeError:
 		return False
 	for substring in substrings:
-		if not tweet["text"].find(substring) == -1:
+		if hasTweetAttributesWithFind(tweet, ["text"], substring, False):
 			return True
 	return False
 			
@@ -334,10 +339,10 @@ def convertFilters(form):
 			"prio3": False
 		},
 		"time": {
-			"startt": "",
-			"endt": "",
-			"startd": "",
-			"endd": ""
+			"time-start": -1,
+			"time-end": -1,
+			"date-start": -1,
+			"date-end": -1
 		}
 	}
 	for index in form:
@@ -419,18 +424,30 @@ def filterTweet(tweet, filters):
 					if isTweetPriority(tweet, priority):
 						prioritiesFilter = True
 						break
-		elif type == "time":
-			filter = filters[type]
+		elif filter == "time":
+			filter = filters[filter]
 			t1 = 0
 			t2 = time.time()
-			startd = filter["startd"]
-			endd = filter["endd"]
-			startt = filter["startt"]
-			endt = filter["endt"]
-			if not startd == "":
-				t1 = getUnixFromDateString(startd)
-			if not endd == "":
-				t2 = getUnixFromDateString(endd)
+			startd = filter["date-start"]
+			endd = filter["date-end"]
+			if not startd == -1:
+				t1 = startd
+			if not endd == -1:
+				t2 = endd
 			if isTweetInTimeFrame(tweet, t1, t2):
-				timeFilter = True
+				startt = filter["time-start"] 
+				endt = filter["time-end"]
+				remainder = getUnixFromDate(tweet["created_at"])%86400
+				if debug:
+					print("startt "+str(startt)+", endt: "+str(endt)+", remainder: "+str(remainder))
+				if not startt == -1 and not endt == -1:
+					timeFilter = remainder >= startt - 3600 and remainder <= endt - 3600
+				elif not startt == -1:
+					timeFilter = remainder >= startt - 3600
+				elif not endt == -1:
+					timeFilter = remainder <= endt - 3600
+				else:
+					timeFilter = True
+	if debug:
+		print("cF: "+str(citiesFilter)+", pF: "+str(prioritiesFilter)+", sF: "+str(servicesFilter)+", tF: "+str(timeFilter))
 	return citiesFilter and prioritiesFilter and servicesFilter and timeFilter

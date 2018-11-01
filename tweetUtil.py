@@ -2,14 +2,14 @@ import json
 import time
 
 priorities = [
-	["A1", "P 1", "Prio: 1", "PRIO 1", "Prio 1"],
-	["A2", "P 2", "Prio: 2", "PRIO 2", "Prio 2"],
-	["B ", "P 3", "Prio: 3", "PRIO 3", "Prio 3"]
+	["A1", "P 1", "Prio: 1", "PRIO 1", "Prio 1:"],
+	["A2", "P 2", "Prio: 2", "PRIO 2", "Prio 2:"],
+	["B ", "P 3", "Prio: 3", "PRIO 3", "Prio 3:"]
 ]
 services = {
-	"police": ["Mishandeling", "Vechtpartij"],
-	"ambulance": ["A1" , "A2", "B ", "AMBU", "Ambulance", "Ambu", "ziekenhuis"],
-	"fireBrigade": ["Rookmelder", "Soort Inzet HV: ", "Brand", " TS", "brand", "brandmelding"]
+	"police": ["Prio 1:", "Prio 2:", "Prio 3:", "Prio: 1 ", "Prio: 2 ", "Prio: 3 "],
+	"ambulance": ["A1 " , "A2 ", "B ", "AMBU", "Ambulance", "Ambu", "ziekenhuis"],
+	"fireBrigade": ["PRIO 1 ", "PRIO 2 ", "PRIO 3 ", "Rookmelder", "Soort Inzet HV: ", "Brand", " TS", "brand", "brandmelding"]
 }
 
 debug = False
@@ -232,7 +232,7 @@ def hasTweetAttributes(attribute, keys, val):
 ### input: object attribute, array keys, string substring
 ### output: bool
 ### example: hasTweetAttributesWithFind(tweet, ["user", "name"], "amsterdam")
-def hasTweetAttributesWithFind(attribute, keys, substring):
+def hasTweetAttributesWithFind(attribute, keys, substring, lower=True):
 	found = True
 	for key in keys:
 		try: 
@@ -240,7 +240,10 @@ def hasTweetAttributesWithFind(attribute, keys, substring):
 		except (KeyError, IndexError):
 			found = False
 			break
-	return found and not attribute.lower().find(substring.lower()) == -1
+	if not lower:
+		return found and not attribute.find(substring) == -1
+	else:
+		return found and not attribute.lower().find(substring.lower()) == -1
 	
 ### input: object objectAttribute, array objectKeys, array dictKeys, string val
 ### output: bool
@@ -277,7 +280,7 @@ def isTweetPriority(tweet, priority):
 	except AttributeError:
 		return False
 	for substring in substrings:
-		if not tweet["text"].find(substring) == -1:
+		if hasTweetAttributesWithFind(tweet, ["text"], substring, False):
 			return True
 	return False
 	
@@ -291,7 +294,7 @@ def isTweetService(tweet, service):
 	except AttributeError:
 		return False
 	for substring in substrings:
-		if not tweet["text"].find(substring) == -1:
+		if hasTweetAttributesWithFind(tweet, ["text"], substring, False):
 			return True
 	return False
 			
