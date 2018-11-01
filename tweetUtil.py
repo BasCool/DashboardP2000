@@ -12,7 +12,7 @@ services = {
 	"fireBrigade": ["Rookmelder", "Soort Inzet HV: ", "Brand", " TS", "brand", "brandmelding"]
 }
 
-debug = True
+debug = False
 
 ### input: string date
 ### output: double
