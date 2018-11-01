@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>@BasBankje</title>
+<link rel="stylesheet" href="/style/layout.css"/>
+<link rel="stylesheet" href="/style/theme.css"/>
+<script src="/lib/jquery-2.1.1.min.js"></script>
+<script src="/lib/jquery.flot.min.js"></script>
+<script src="/lib/core.js"></script>
+<script src="/lib/charts.js"></script>
+<script src="/lib/log.js"></script>
+<script src="/lib/tweets.js"></script>
+<script src="/lib/form.js"></script>
+<link rel="shortcut icon" href="favicon.ico" /> 
+
+</head>
+<body>
+<div style="background-color: #EEEEEE">
+	<h1>P2000 Dashboard</h1>
+	<hr>
+</div>
+<div id='filter' style="width: 20%; float: left;">
+	<h3>Filters</h3>
+	<form>
+	<div id='regions'>
+		<input type="submit" value="Filter Now"/>
+		<p><b>Regions</b></p>
+		<ul>
+			<li style="display:block;"><input type="checkbox" name="adam" checked>Amsterdam</li>
+			<li style="display:block;"><input type="checkbox" name="rdam" checked>Rotterdam</li>
+			<li style="display:block;"><input type="checkbox" name="zwol" checked>Zwolle</li>
+			<li style="display:block;"><input type="checkbox" name="lwar" checked>Leeuwarden</li>
+			<li style="display:block;"><input type="checkbox" name="nhln" checked>Noord-Holland Noord</li>
+			<li style="display:block;"><input type="checkbox" name="tilb" checked>Tilburg</li>
+			<li style="display:block;"><input type="checkbox" name="gtrb" checked>Geertruidenberg</li>
+			<li style="display:block;"><input type="checkbox" name="harw" checked>Harderwijk</li>
+			<li style="display:block;"><input type="checkbox" name="oldb" checked>Oldebroek</li>
+			<li style="display:block;"><input type="checkbox" name="oned" checked>Oost Nederland</li>
+		</ul>
+	</div>
+	<div id='services'>
+		<p><b>Services</b></p>
+		<ul>
+			<li style="display:block;"><input type="checkbox" name="police" id="one" checked>Police</li>
+			<li style="display:block;"><input type="checkbox" name="ambu" id="two" checked>Ambulance</li>
+			<li style="display:block;"><input type="checkbox" name="firebrig" id="three" checked>Fire Brigade</li>
+		</ul>
+	</div>
+	<div id='priority'>
+		<p><b>Priority</b></p>
+		<ul>
+			<li style="display:block;"><input type="checkbox" name="prio1" id="one" checked>First priority</li>
+			<li style="display:block;"><input type="checkbox" name="prio2" id="two" checked>Second priority</li>
+			<li style="display:block;"><input type="checkbox" name="prio3" id="three" checked>Third priority</li>
+		</ul>
+	</div>
+	<div id='time'>
+		<p><b>Time</b></p>
+			<label for="time-start">From:   </label></br>
+			<input id="time-start" type="time" name="time-start"></br>
+			<label for="time-end">To:     </label></br>
+			<input id="time-end" type="time" name="time-end">
+	</div>
+	</br>
+	<div>
+		<p><b>Date</b></p>
+			<label for="date-start">From:   </label></br>
+			<input id="date-start" type="date" name="date-start"></br>
+			<label for="date-end">To:     </label></br>
+			<input id="date-end" type="date" name="date-end">
+	</div>
+	</form>
+</div>
+
+
+
+<div id="filtered" style="width: 40%; float: left; max-height:950px;"><h4>Filtered Tweets</h4></div>
+<div id="unfiltered" style="width: 40%; float: right; max-height:950px;"><h4>Unfiltered Tweets</h4></div>
+<div style="width: 100%; float: left;">
+<hr>
+Created by Guido de Jong, Gies den Broeder, Bas Kool, Herbert Keurhorst, Frans Schooltink and Raoul Timmer (and Bas Bankje)
+</div>
+
+
+
+
+<script>
+block('#unfiltered').tweets({
+  memory: 12
+});
+events.connect('unfil', '#unfiltered');
+
+block('#filtered').tweets({
+  memory: 12
+});
+events.connect('fil', '#filtered');
+
+block('#filter').form({
+    target: '/api/filter'
+});
+</script>
+</body>
+</html>
