@@ -20,7 +20,6 @@ def add_request_handlers(httpd):
 @event('init')
 def setup(ctx, e):
 	#tweets = getTweetsArray()
-	hoi = 1
 	start_offline_tweets('p2000.txt', time_factor=50, event_name='start1')
 	start_offline_tweets('p2000.txt', time_factor=200, event_name='start2')
 
