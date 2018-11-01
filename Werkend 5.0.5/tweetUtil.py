@@ -1,16 +1,17 @@
-import json
-import time
+import json, time
 
 priorities = [
-	["A1", "P 1", "Prio: 1", "PRIO 1", "Prio 1:"],
-	["A2", "P 2", "Prio: 2", "PRIO 2", "Prio 2:"],
-	["B ", "P 3", "Prio: 3", "PRIO 3", "Prio 3:"]
+	["A1", "P 1", "Prio: 1", "PRIO 1", "Prio 1:", "HV 1 ", "BR 1 "],
+	["A2", "P 2", "Prio: 2", "PRIO 2", "Prio 2:", "HV 2 ", "BR 2 "],
+	["B ", "P 3", "Prio: 3", "PRIO 3", "Prio 3:", "HV 3 "]
 ]
 services = {
-	"police": ["Prio 1:", "Prio 2:", "Prio 3:", "Prio: 1 ", "Prio: 2 ", "Prio: 3 "],
-	"ambulance": ["A1 " , "A2 ", "B ", "AMBU", "Ambulance", "Ambu", "ziekenhuis"],
-	"fireBrigade": ["PRIO 1 ", "PRIO 2 ", "PRIO 3 ", "Rookmelder", "Soort Inzet HV: ", "Brand", " TS", "brand", "brandmelding"]
+	"police": ["Prio 1:", "Prio 2:", "Prio 3:", "Prio: 1 ", "Prio: 2 ", "Prio: 3 ", "Prio 1 ", "Prio 2 ", "Prio 3 "],
+	"ambulance": ["A1 " , "A2 ", "B "],
+	"fireBrigade": ["BR 1 ", "BR 2 ", "HV 1 ", "HV 2 " , "HV 3", "PRIO 1 ", "PRIO 2 ", "PRIO 3 "]
 }
+
+regions = {"Amsterdam", "Rotterdam", "Zwolle", "Leeuwarden", "NHN", "Tilburg", "Geertruidenberg", "Harderwijk", "Oldeburg", "MON"}
 
 debug = False
 
@@ -313,7 +314,7 @@ def printContents(tweets):
 
 ### input: dictionary filters
 ### output: dictionary
-### example: print(convertFilters({'adam': ['on'], 'rdam': ['on'], 'zwol': ['on'], 'lwar': ['on'], 'nhln': ['on'], 'tilb': ['on'], 'gtrb': ['on'], 'harw': ['on'], 'oldb': ['on'], 'oned': ['on'], 'police': ['on'], 'ambu': ['on'], 'firebrig': ['on'], 'prio1': ['on'], 'prio2': ['on'], 'prio3': ['on'], 'time-start': '', 'time-end': '', 'date-start': '', 'date-end': ''}))
+### example: convertFilters({'adam': ['on'], 'rdam': ['on'], 'zwol': ['on'], 'lwar': ['on'], 'nhln': ['on'], 'tilb': ['on'], 'gtrb': ['on'], 'harw': ['on'], 'oldb': ['on'], 'oned': ['on'], 'police': ['on'], 'ambu': ['on'], 'firebrig': ['on'], 'prio1': ['on'], 'prio2': ['on'], 'prio3': ['on'], 'time-start': '', 'time-end': '', 'date-start': '', 'date-end': ''})
 def convertFilters(form):
 	converted = {
 		"cities": {
@@ -326,7 +327,8 @@ def convertFilters(form):
 			"gtrb": False,
 			"harw": False,
 			"oldb": False,
-			"oned": False
+			"oned": False,
+			"othr": False
 		},
 		"services": {
 			"police": False,
@@ -346,7 +348,7 @@ def convertFilters(form):
 		}
 	}
 	for index in form:
-		if index == "adam" or index == "rdam" or index == "zwol" or index == "lwar" or index == "nhln" or index == "tilb" or index == "gtrb" or index == "harw" or index == "oldb" or index == "oned":
+		if index == "adam" or index == "rdam" or index == "zwol" or index == "lwar" or index == "nhln" or index == "tilb" or index == "gtrb" or index == "harw" or index == "oldb" or index == "oned" or index == "othr":
 			if not form[index] == []:
 				converted["cities"][index] = True
 		elif index == "police" or index == "ambu" or index == "firebrig":
@@ -365,7 +367,7 @@ def convertFilters(form):
 
 ### input: object tweet, dictionary filters
 ### output: bool
-### example: filterTweet(tweet, {'adam': ['on'], 'rdam': ['on'], 'zwol': ['on'], 'lwar': ['on'], 'nhln': ['on'], 'tilb': ['on'], 'gtrb': ['on'], 'harw': ['on'], 'oldb': ['on'], 'oned': ['on'], 'police': ['on'], 'ambu': ['on'], 'firebrig': ['on'], 'prio1': ['on'], 'prio2': ['on'], 'prio3': ['on'], 'time-start': '', 'time-end': '', 'date-start': '', 'date-end': ''})
+### example: filterTweet(tweet, {'adam': ['on'], 'rdam': ['on'], 'zwol': ['on'], 'lwar': ['on'], 'nhln': ['on'], 'tilb': ['on'], 'gtrb': ['on'], 'harw': ['on'], 'oldb': ['on'], 'oned': ['on'], 'police': ['on'], 'ambu': ['on'], 'firebrig': ['on'], 'othr': ['on'], 'prio1': ['on'], 'prio2': ['on'], 'prio3': ['on'], 'time-start': '', 'time-end': '', 'date-start': '', 'date-end': ''})
 def filterTweet(tweet, filters):
 	filters = convertFilters(filters)
 	citiesFilter = False
@@ -397,7 +399,15 @@ def filterTweet(tweet, filters):
 						region = "Oldeburg"
 					elif attribute == "oned":
 						region = "MON"
-					if hasTweetAttributesWithFind(tweet, ["user", "name"], region) or hasTweetAttributesWithFind(tweet, ["text"], region):
+					elif attribute == "othr":
+						found = False
+						for region in regions:
+							if hasTweetAttributesWithFind(tweet, ["user", "name"], region) or hasTweetAttributesWithFind(tweet, ["text"], region):
+								found = True
+						if not found:
+							citiesFilter = True
+							break
+					if not attribute == "othr" and (hasTweetAttributesWithFind(tweet, ["user", "name"], region) or hasTweetAttributesWithFind(tweet, ["text"], region)):
 						citiesFilter = True
 						break
 		elif filter == "services":

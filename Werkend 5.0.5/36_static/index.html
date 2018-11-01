@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>@BasBankje</title>
+<title>Letterlijk Basbest</title>
+<link rel="shortcut icon" type="image/png" href="/favicon.png"/>
+<!--link rel="shortcut icon" type="image/png" href="http://example.com/favicon.png"/-->
+
 <link rel="stylesheet" href="/style/theme.css"/>
 <link rel="stylesheet" href="/style/layout.css"/>
 
@@ -14,29 +17,49 @@
 <script src="/lib/form.js"></script>
 <link rel="shortcut icon" href="favicon.ico" /> 
 <style>
+.button {
+    background: #f5f5f5;
+    color: #2D3B45;
+    border: 1px solid;
+    border-color: #C7CDD1;
+    border-radius: 3px;
+    transition: background-color 0.2s ease-in-out;
+    display: inline-block;
+    padding: 8px 14px;
+    margin-bottom: 0;
+    font-size: 16px;
+    font-size: 1rem;
+    line-height: 20px;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    text-decoration: none;
+    overflow: hidden;
+    text-shadow: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
 .top {
 	background-color: #1dcaff; 
 	border-top-style: solid; 
 	border-color: #1dcaff; 
-	margin-top: 0px; 
-	margin-bottom: 0px; 
-	margin-right: 0px; 
-	margin-left: 0px;
 }
+
+h1 {
+	font-size: 35px;
+}
+
 body {
-    border: 0px solid blue;
-	
 	margin-top: 0px;
     margin-bottom: 0px;
     margin-right: 0px;
     margin-left: 0px;
 }
-html {
-    border: 0px solid yellow;
+h2 {
 	margin-top: 0px;
-    margin-bottom: 0px;
-    margin-right: 0px;
-    margin-left: 0px;
+    margin-bottom: 15px;
 }
 .filterbox {  
 	width: 15%; 
@@ -55,14 +78,17 @@ html {
 </head>
 <body>
 <div class="top">
-	<h1 style="color: white; margin-left: 10px;">P2000 Dashboard</h1>
+	<img src="sirenbird.png" height="75" width="75" style="float: left">
+	<div style="margin-right: 5px; color: white; float: right;">G. den Broeder - G.J.W. de Jong -  L.H. Keurhorst - B.B. Kool - F.A.E. Schooltink - R. Timmer</div>
+	<h1 width="200px" style="color: white; margin-left: 10px;">P2000 Dashboard</h1>
+	
 	<hr>
 </div>
 <div id='filter' style="" class="filterbox">
-	<h3>Filters</h3>
+	<h2>Filters</h2>
 	<form>
 	<div id='regions'>
-		<input type="submit" value="Filter Now"/>
+		<input type="submit" value="Apply Filter" class="button"/>
 		<p><b>Regions</b></p>
 		<ul>
 			<li style="display:block;"><input type="checkbox" name="adam" checked>Amsterdam</li>
@@ -108,13 +134,19 @@ html {
 			<label for="date-end">To:     </label></br>
 			<input id="date-end" type="date" name="date-end">
 	</div>
+	<div id='other'>
+		<p><b>Exceptions</b></p>
+		<ul>
+			<li style="display:block;"><input type="checkbox" name="othr" id="one" checked>Other</li>
+		</ul>
+	</div>
 	</form>
 </div>
 
 
 
-<div id="filtered" style="width: 40%; float: left; max-height:950px;"><h4>Filtered Tweets</h4></div>
-<div id="unfiltered" style="width: 40%; float: left; max-height:950px;"><h4>Unfiltered Tweets</h4></div>
+<div id="filtered" style="width: 40%; float: left; max-height:950px;"><h2 style="margin-left: 10px;">Filtered Tweets</h2></div>
+<div id="unfiltered" style="width: 40%; float: left; max-height:950px;"><h2 style="margin-left: 10px;">Unfiltered Tweets</h2></div>
 
 
 <script>
