@@ -19,8 +19,8 @@ def add_request_handlers(httpd):
 @event('init')
 def setup(ctx, e):
     #tweets = getTweetsArray()
-    start_offline_tweets('p2000.txt', time_factor=50, event_name='start1')
-    start_offline_tweets('p2000.txt', time_factor=50, event_name='start2')
+    start_offline_tweets('p2000.txt', time_factor=75, event_name='start1')
+    start_offline_tweets('p2000.txt', time_factor=75, event_name='start2')
 
 @event('start1')
 def filtfunc(ctx, e):
