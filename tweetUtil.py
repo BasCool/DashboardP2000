@@ -4,11 +4,11 @@ import time
 priorities = [
 	["A1", "P 1", "Prio: 1", "PRIO 1", "Prio 1"],
 	["A2", "P 2", "Prio: 2", "PRIO 2", "Prio 2"],
-	["B", "P 3", "Prio: 3", "PRIO 3", "Prio 3"]
+	["B ", "P 3", "Prio: 3", "PRIO 3", "Prio 3"]
 ]
 services = {
 	"police": ["Mishandeling", "Vechtpartij"],
-	"ambulance": ["A1" , "A2", "B", "AMBU", "Ambulance", "Ambu", "ziekenhuis"],
+	"ambulance": ["A1" , "A2", "B ", "AMBU", "Ambulance", "Ambu", "ziekenhuis"],
 	"fireBrigade": ["Rookmelder", "Soort Inzet HV: ", "Brand", " TS", "brand", "brandmelding"]
 }
 
@@ -22,15 +22,15 @@ def getUnixFromDate(date):
 ### output: double
 ### example: getUnixFromDateString("10-10-2018")
 def getUnixFromDateString(string):
-	return time.mktime(time.strptime(string, "%d-%m-%Y"))
+	return time.mktime(time.strptime(string, "%Y-%m-%d"))
 
 ### input: string string
 ### output: double
 ### example: getUnixFromTimeString("22:00")
 def getUnixFromTimeString(string):
 	string = string.replace(":", "/")
-	string = "1-1-1970/" + string
-	return time.mktime(time.strptime(string, "%d-%m-%Y/%H/%M"))
+	string = "1970-1-1/" + string
+	return time.mktime(time.strptime(string, "%Y-%m-%d/%H/%M"))
 	
 ### input: array array, typeless object
 ### output: typeless 
@@ -334,10 +334,10 @@ def convertFilters(form):
 			"prio3": False
 		},
 		"time": {
-			"start-time": -1,
-			"end-time": -1,
-			"start-date": -1,
-			"end-date": -1
+			"time-start": -1,
+			"time-end": -1,
+			"date-start": -1,
+			"date-end": -1
 		}
 	}
 	for index in form:
@@ -419,18 +419,27 @@ def filterTweet(tweet, filters):
 					if isTweetPriority(tweet, priority):
 						prioritiesFilter = True
 						break
-		elif type == "time":
-			filter = filters[type]
+		elif filter == "time":
+			filter = filters[filter]
 			t1 = 0
 			t2 = time.time()
-			startd = filter["start-date"]
-			endd = filter["end-date"]
-			#startt = filter["start-time"]
-			#endt = filter["end-time"]
+			startd = filter["date-start"]
+			endd = filter["date-end"]
 			if not startd == -1:
 				t1 = startd
 			if not endd == -1:
 				t2 = endd
 			if isTweetInTimeFrame(tweet, t1, t2):
-				timeFilter = True
+				startt = filter["time-start"]
+				endt = filter["time-end"]
+				remainder = getUnixFromDate(tweet["created_at"])%86400000
+				if not startt == -1 and not endt == -1:
+					timeFilter = remainder > startt and remainder < endt
+				elif not startt == -1:
+					timeFilter = remainder > startt
+				elif not endt == -1:
+					timeFilter = remainder < endt
+				else:
+					timeFilter = True
+			print("cF"+str(citiesFilter)+" pF"+str(prioritiesFilter)+" sF"+str(servicesFilter)+" tF"+str(timeFilter))
 	return citiesFilter and prioritiesFilter and servicesFilter and timeFilter
