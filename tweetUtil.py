@@ -12,6 +12,8 @@ services = {
 	"fireBrigade": ["Rookmelder", "Soort Inzet HV: ", "Brand", " TS", "brand", "brandmelding"]
 }
 
+debug = False
+
 ### input: string date
 ### output: double
 ### example: getUnixFromDate("Wed Sep 18 20:17:17 +0000 2013")
@@ -432,7 +434,7 @@ def filterTweet(tweet, filters):
 			if isTweetInTimeFrame(tweet, t1, t2):
 				startt = filter["time-start"]
 				endt = filter["time-end"]
-				remainder = getUnixFromDate(tweet["created_at"])%86400000
+				remainder = getUnixFromDate(tweet["created_at"])%86400
 				if not startt == -1 and not endt == -1:
 					timeFilter = remainder > startt and remainder < endt
 				elif not startt == -1:
@@ -441,5 +443,6 @@ def filterTweet(tweet, filters):
 					timeFilter = remainder < endt
 				else:
 					timeFilter = True
-			print("cF"+str(citiesFilter)+" pF"+str(prioritiesFilter)+" sF"+str(servicesFilter)+" tF"+str(timeFilter))
+	if debug:
+		print("cF"+str(citiesFilter)+" pF"+str(prioritiesFilter)+" sF"+str(servicesFilter)+" tF"+str(timeFilter))
 	return citiesFilter and prioritiesFilter and servicesFilter and timeFilter
