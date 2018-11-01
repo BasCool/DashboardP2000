@@ -1,32 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-<style>
-body { background-color: #DDDDDD;}
-
-.item1 { grid-area: header;}
-.item2 { grid-area: menu; background-color: #DDDDDD;}
-.item3 { grid-area: main; background-color: #FFFFFF;}
-.item4 { grid-area: right; background-color: #FFFFFF;}
-.item5 { grid-area: footer;}
-
-
-
-.grid-container {
-  display: grid;
-  grid-template-areas:
-    'header header header'
-    'menu main right'
-    'menu footer footer';
-  grid-gap: 15px;
-  padding: 10px;
-}
-.grid-container > div {
-  text-align: left;
-  padding: 0px 0;
-  font-size: 15px;
-}
-</style>
 
 <title>@BasBankje</title>
 <link rel="stylesheet" href="/style/layout.css"/>
@@ -41,12 +15,12 @@ body { background-color: #DDDDDD;}
 <link rel="shortcut icon" href="favicon.ico" /> 
 
 </head>
-<body class="grid-container">
-<div class="item1">
+<body>
+<div style="background-color: #EEEEEE">
 	<h1>P2000 Dashboard</h1>
 	<hr>
 </div>
-<div id='filter' class='item2'>
+<div id='filter' style="width: 20%; float: left;">
 	<h3>Filters</h3>
 	<form>
 	<div id='regions'>
@@ -101,10 +75,10 @@ body { background-color: #DDDDDD;}
 
 
 
-<div id="filtered"  class="item3" width="40%" style="max-height:950px;"><h4>Filtered Tweets</h4></div>
-<div id="unfiltered" class="item4" width="40%" style="max-height:950px;"><h4>Unfiltered Tweets</h4></div>
-<div class="item5">
-<br><br><br>
+<div id="filtered" style="width: 40%; float: left; max-height:950px;"><h4>Filtered Tweets</h4></div>
+<div id="unfiltered" style="width: 40%; float: right; max-height:950px;"><h4>Unfiltered Tweets</h4></div>
+<div style="width: 100%; float: left;">
+<hr>
 Created by Guido de Jong, Gies den Broeder, Bas Kool, Herbert Keurhorst, Frans Schooltink and Raoul Timmer (and Bas Bankje)
 </div>
 
