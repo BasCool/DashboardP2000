@@ -28,9 +28,9 @@ def setup(ctx, e):
 def filtfunc(ctx, e):
     tweet = e.data
     #print("setting: " + str(filterset))
-    if util.filterTweet(tweet, filterset):
+    if tweetUtil.filterTweet(tweet, filterset):
         emit('fil', tweet)
-    print(util.filterTweet(tweet, filterset))
+    print(tweetUtil.filterTweet(tweet, filterset))
 
 @event('start2')
 def unfiltfunc(ctx, e):
