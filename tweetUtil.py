@@ -34,7 +34,7 @@ regions = {"Amsterdam", "Rotterdam", "Zwolle", "Leeuwarden", "NHN", "Tilburg", "
 services = {"ambulance", "police", "fireBrigade"}
 priorities = {"1", "2", "3"}
 
-debug = True
+debug = False
 
 ### input: string date
 ### output: double
