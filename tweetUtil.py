@@ -1,19 +1,40 @@
 import json, time
 
-priorities = [
-	["A1", "P 1", "Prio: 1", "PRIO 1", "Prio 1:", "HV 1 ", "BR 1 "],
-	["A2", "P 2", "Prio: 2", "PRIO 2", "Prio 2:", "HV 2 ", "BR 2 "],
-	["B ", "P 3", "Prio: 3", "PRIO 3", "Prio 3:", "HV 3 "]
-]
-services = {
+serviceSubstrings = {
 	"police": ["Prio 1:", "Prio 2:", "Prio 3:", "Prio: 1 ", "Prio: 2 ", "Prio: 3 ", "Prio 1 ", "Prio 2 ", "Prio 3 "],
-	"ambulance": ["A1 " , "A2 ", "B "],
+	"ambulance": ["A1 " , "A2 ", "B ", "B1 ", "B2 "],
 	"fireBrigade": ["BR 1 ", "BR 2 ", "HV 1 ", "HV 2 " , "HV 3", "PRIO 1 ", "PRIO 2 ", "PRIO 3 "]
+}
+prioritySubstrings = {
+	"1": ["A1", "P 1", "Prio: 1", "PRIO 1", "Prio 1:", "Prio 1 ", "HV 1 ", "BR 1 "],
+	"2": ["A2", "P 2", "Prio: 2", "PRIO 2", "Prio 2:", "Prio 2 ", "HV 2 ", "BR 2 "],
+	"3": ["B ", "B1 ", "B2 ", "P 3", "Prio: 3", "PRIO 3", "Prio 3:", "Prio 3 ", "HV 3 "]
+}
+abbreviations = {
+	"adam": "Amsterdam",
+	"rdam": "Rotterdam",
+	"zwol": "Zwolle",
+	"lwar": "Leeuwarden",
+	"nhln": "NHN",
+	"tilb": "Tilburg",
+	"gtrb": "Geertruidenberg",
+	"harw": "Harderwijk",
+	"oldb": "Oldeburg",
+	"oned": "MON",
+	"police": "police",
+	"ambu": "ambulance",
+	"firebrig": "fireBrigade",
+	"prio1": "1",
+	"prio2": "2",
+	"prio3": "3",
+	"othr": "other"
 }
 
 regions = {"Amsterdam", "Rotterdam", "Zwolle", "Leeuwarden", "NHN", "Tilburg", "Geertruidenberg", "Harderwijk", "Oldeburg", "MON"}
+services = {"ambulance", "police", "fireBrigade"}
+priorities = {"1", "2", "3"}
 
-debug = False
+debug = True
 
 ### input: string date
 ### output: double
@@ -29,11 +50,11 @@ def getUnixFromDateString(string):
 
 ### input: string string
 ### output: double
-### example: getUnixFromTimeString("22:00")
-def getUnixFromTimeString(string):
-	string = string.replace(":", "/")
-	string = "1970-1-1/" + string
-	return time.mktime(time.strptime(string, "%Y-%m-%d/%H/%M"))
+### example: getSecondsFromTime("22:00")
+def getSecondsFromTime(string):
+	hours = int(string[:2]) or 0
+	minutes = int(string[3:]) or 0
+	return hours*3600 + minutes*60
 	
 ### input: array array, typeless object
 ### output: typeless 
@@ -277,7 +298,7 @@ def hasTweetAttributesInArray(objectAttribute, objectKeys, dictKeys, val):
 def isTweetPriority(tweet, priority):
 	substrings = None
 	try:
-		substrings = priorities[priority - 1]
+		substrings = prioritySubstrings[priority]
 	except AttributeError:
 		return False
 	for substring in substrings:
@@ -291,7 +312,7 @@ def isTweetPriority(tweet, priority):
 def isTweetService(tweet, service):
 	substrings = None
 	try:
-		substrings = services[service]
+		substrings = serviceSubstrings[service]
 	except AttributeError:
 		return False
 	for substring in substrings:
@@ -318,51 +339,54 @@ def printContents(tweets):
 def convertFilters(form):
 	converted = {
 		"cities": {
-			"adam": False,
-			"rdam": False,
-			"zwol": False,
-			"lwar": False,
-			"nhln": False,
-			"tilb": False,
-			"gtrb": False,
-			"harw": False,
-			"oldb": False,
-			"oned": False,
-			"othr": False
+			"Amsterdam": False,
+			"Rotterdam": False,
+			"Zwolle": False,
+			"Leeuwarden": False,
+			"NHN": False,
+			"Tilburg": False,
+			"Geertruidenberg": False,
+			"Harderwijk": False,
+			"Oldeburg": False,
+			"MON": False
 		},
 		"services": {
 			"police": False,
-			"ambu": False,
-			"firebrig": False
+			"ambulance": False,
+			"fireBrigade": False
 		},
 		"priorities": {
-			"prio1": False,
-			"prio2": False,
-			"prio3": False
+			"1": False,
+			"2": False,
+			"3": False
 		},
 		"time": {
 			"time-start": -1,
 			"time-end": -1,
 			"date-start": -1,
 			"date-end": -1
-		}
+		},
+		"other": False
 	}
 	for index in form:
-		if index == "adam" or index == "rdam" or index == "zwol" or index == "lwar" or index == "nhln" or index == "tilb" or index == "gtrb" or index == "harw" or index == "oldb" or index == "oned" or index == "othr":
+		if index == "adam" or index == "rdam" or index == "zwol" or index == "lwar" or index == "nhln" or index == "tilb" or index == "gtrb" or index == "harw" or index == "oldb" or index == "oned":
 			if not form[index] == []:
-				converted["cities"][index] = True
+				converted["cities"][abbreviations[index]] = True
 		elif index == "police" or index == "ambu" or index == "firebrig":
 			if not form[index] == []:
-				converted["services"][index] = True
+				converted["services"][abbreviations[index]] = True
 		elif index == "prio1" or index == "prio2" or index == "prio3":
 			if not form[index] == []:
-				converted["priorities"][index] = True
+				converted["priorities"][abbreviations[index]] = True
 		elif index == "date-start" or index == "date-end":
 			if not form[index] == "":
 				converted["time"][index] = getUnixFromDateString(form[index])
 		elif index == "time-start" or index == "time-end":
 			if not form[index] == "":
-				converted["time"][index] = getUnixFromTimeString(form[index])
+				converted["time"][index] = getSecondsFromTime(form[index])
+		elif index == "othr":
+			if not form[index] == []:
+				converted[abbreviations[index]] = True
 	return converted
 
 ### input: object tweet, dictionary filters
@@ -374,64 +398,27 @@ def filterTweet(tweet, filters):
 	servicesFilter = False
 	prioritiesFilter = False
 	timeFilter = False
+	otherFilter = False
+	otherCities = True
+	otherServices = True
+	otherPriorities = True
 	for filter in filters:
 		if filter == "cities":
 			for attribute in filters[filter]:
 				if filters[filter][attribute]:
-					region = None
-					if attribute == "adam":
-						region = "Amsterdam"
-					elif attribute == "rdam":
-						region = "Rotterdam"
-					elif attribute == "zwol":
-						region = "Zwolle"
-					elif attribute == "lwar":
-						region = "Leeuwarden"
-					elif attribute == "nhln":
-						region = "NHN"
-					elif attribute == "tilb":
-						region = "Tilburg"
-					elif attribute == "gtrb":
-						region = "Geertruidenberg"
-					elif attribute == "harw":
-						region = "Harderwijk"
-					elif attribute == "oldb":
-						region = "Oldeburg"
-					elif attribute == "oned":
-						region = "MON"
-					elif attribute == "othr":
-						found = False
-						for region in regions:
-							if hasTweetAttributesWithFind(tweet, ["user", "name"], region) or hasTweetAttributesWithFind(tweet, ["text"], region):
-								found = True
-						if not found:
-							citiesFilter = True
-							break
-					if not attribute == "othr" and (hasTweetAttributesWithFind(tweet, ["user", "name"], region) or hasTweetAttributesWithFind(tweet, ["text"], region)):
+					if (hasTweetAttributesWithFind(tweet, ["user", "name"], attribute) or hasTweetAttributesWithFind(tweet, ["text"], attribute)):
 						citiesFilter = True
 						break
 		elif filter == "services":
 			for attribute in filters[filter]:
 				if filters[filter][attribute]:
-					service = attribute
-					if attribute == "ambu":
-						service = "ambulance"
-					elif attribute == "firebrig":
-						service = "fireBrigade"
-					if isTweetService(tweet, service):
+					if isTweetService(tweet, attribute):
 						servicesFilter = True
 						break
 		elif filter == "priorities":
 			for attribute in filters[filter]:
 				if filters[filter][attribute]:
-					priority = None
-					if attribute == "prio1":
-						priority = 1
-					elif attribute == "prio2":
-						priority = 2
-					elif attribute == "prio3":
-						priority = 3
-					if isTweetPriority(tweet, priority):
+					if isTweetPriority(tweet, attribute):
 						prioritiesFilter = True
 						break
 		elif filter == "time":
@@ -447,17 +434,36 @@ def filterTweet(tweet, filters):
 			if isTweetInTimeFrame(tweet, t1, t2):
 				startt = filter["time-start"] 
 				endt = filter["time-end"]
-				remainder = getUnixFromDate(tweet["created_at"])%86400
+				remainder = (getUnixFromDate(tweet["created_at"]) + 7200)%86400 # timezone perhaps?
 				if debug:
-					print("startt "+str(startt)+", endt: "+str(endt)+", remainder: "+str(remainder))
+					print("startt " + str(startt) + ", endt: " + str(endt) + ", remainder: " + str(remainder))
 				if not startt == -1 and not endt == -1:
-					timeFilter = remainder >= startt - 3600 and remainder <= endt - 3600
+					if endt > startt:
+						timeFilter = remainder >= startt and remainder <= endt
+					else:
+						timeFilter = remainder >= endt and remainder <= startt
 				elif not startt == -1:
-					timeFilter = remainder >= startt - 3600
+					timeFilter = remainder >= startt
 				elif not endt == -1:
-					timeFilter = remainder <= endt - 3600
+					timeFilter = remainder <= endt
 				else:
 					timeFilter = True
+		elif filter == "other":
+			if filters[filter]:
+				otherFilter = True
+				for region in regions:
+					if hasTweetAttributesWithFind(tweet, ["user", "name"], region) or hasTweetAttributesWithFind(tweet, ["text"], region):
+						otherCities = False
+						break
+				for service in services:
+					if isTweetService(tweet, service):
+						otherServices = False
+						break
+				for priority in priorities:
+					if isTweetPriority(tweet, priority):
+						otherPriorities = False
+						break
 	if debug:
-		print("cF: "+str(citiesFilter)+", pF: "+str(prioritiesFilter)+", sF: "+str(servicesFilter)+", tF: "+str(timeFilter))
-	return citiesFilter and prioritiesFilter and servicesFilter and timeFilter
+		print("oC: " + str(otherCities) + ", oP: " + str(otherPriorities) + ", oS: " + str(otherServices) + ", oF: " + str(otherFilter) + ", cF: " + str(citiesFilter) + ", pF: " + str(prioritiesFilter) + ", sF: " + str(servicesFilter) + ", tF: " + str(timeFilter))
+	compliesWithMainFilters = citiesFilter and prioritiesFilter and servicesFilter
+	return compliesWithMainFilters and timeFilter or otherFilter and timeFilter and (otherCities or otherServices or otherPriorities)
